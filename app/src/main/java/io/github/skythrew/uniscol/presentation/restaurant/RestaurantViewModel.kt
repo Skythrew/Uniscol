@@ -1,29 +1,21 @@
 package io.github.skythrew.uniscol.presentation.restaurant
 
 import android.util.Log
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.skythrew.uniscol.data.accounts.AccountRepository
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInterface
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountRepository
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantSessionManager
-import io.github.skythrew.uniscol.data.services.ServiceType
-import io.github.skythrew.uniscol.presentation.UniscolViewModel
-import kotlinx.coroutines.flow.Flow
+import io.github.skythrew.uniscol.data.network.NetworkRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlinx.coroutines.flow.first as first1
 
 @HiltViewModel
 class RestaurantViewModel @Inject constructor(
+    val networkRepository: NetworkRepository,
     val sessionManager: RestaurantSessionManager,
     val accountsRepository: RestaurantAccountRepository
 ): ViewModel() {
@@ -35,27 +27,29 @@ class RestaurantViewModel @Inject constructor(
     private val _balance = MutableStateFlow<Int?>(null)
     val balance = _balance
 
-    var initialized = false
+    private val _cardNumber = MutableStateFlow<String?>(null)
+    val cardNumber = _cardNumber
 
     init {
         viewModelScope.launch {
             if (selectedAccount.value == null)
                 sessionManager.setCurrentAccount(accounts.first1()[0])
 
+            _cardNumber.value = sessionManager.currentAccount.value!!.cardNumber
+
             selectedAccount.collect { account ->
                 if (account != null) {
-                    _balance.value = sessionManager.fetchBalance()
-
-                    _cardNumber.value = account.cardNumber
+                    try {
+                        _balance.value = sessionManager.fetchBalance()
+                    } catch (e: Exception) {
+                        _balance.value = null
+                    }
 
                     Log.d("RestaurantViewModel", "Balance updated to ${sessionManager.currentSession.value!!.balance}")
                 }
             }
         }
     }
-
-    var _cardNumber = MutableStateFlow<String?>(null)
-    val cardNumber = _cardNumber
 
     fun updateSelectedAccount(account: RestaurantAccountInterface) {
         viewModelScope.launch {

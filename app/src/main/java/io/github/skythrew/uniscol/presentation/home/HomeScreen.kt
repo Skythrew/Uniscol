@@ -3,39 +3,30 @@ package io.github.skythrew.uniscol.presentation.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.presentation.components.ButtonWithIcon
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(navController: NavController, drawerState: DrawerState, homeViewModel: HomeViewModel) {
-    val offline by homeViewModel.appViewModel.offline.collectAsState(true)
+    val offline by homeViewModel.appViewModel.networkRepository.online.collectAsState(true)
 
     Scaffold (
         topBar = { UniscolTopAppBar("Accueil", TopAppBarNavigation.Sidebar, drawerState, navController) }

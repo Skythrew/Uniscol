@@ -1,6 +1,7 @@
 package io.github.skythrew.uniscol.data.accounts.restaurant
 
 import android.util.Log
+import io.github.skythrew.uniscol.data.network.NetworkRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -12,7 +13,9 @@ data class RestaurantSession(
 )
 
 @Singleton
-class RestaurantSessionManager @Inject constructor() {
+class RestaurantSessionManager @Inject constructor(
+    val networkRepository: NetworkRepository
+) {
     val _currentAccount = MutableStateFlow<RestaurantAccountInterface?>(null)
     val currentAccount: StateFlow<RestaurantAccountInterface?> = _currentAccount
 
@@ -21,15 +24,19 @@ class RestaurantSessionManager @Inject constructor() {
 
     private val authenticatedAccounts = HashMap<Int, RestaurantSession>()
 
-    suspend fun setCurrentAccount(account: RestaurantAccountInterface) {
+    fun setCurrentAccount(account: RestaurantAccountInterface) {
         if (!authenticatedAccounts.containsKey(account.id)) {
             Log.d("LOG", account.username.toString())
             authenticatedAccounts[account.id] = RestaurantSession(account)
-            authenticatedAccounts[account.id]!!.account.login()
         }
 
         _currentSession.value = authenticatedAccounts[account.id]!!
         _currentAccount.value = authenticatedAccounts[account.id]!!.account
+    }
+
+    suspend fun login() {
+        if (networkRepository.online.value && _currentAccount.value != null)
+            _currentAccount.value!!.login()
     }
 
     suspend fun fetchBalance(): Int? {
@@ -38,7 +45,15 @@ class RestaurantSessionManager @Inject constructor() {
             return null
         }
         else {
-            _currentSession.value!!.balance = _currentAccount.value!!.getBalance()
+            try {
+                if (!_currentAccount.value!!.loggedIn)
+                    _currentAccount.value!!.login()
+
+                _currentSession.value!!.balance = _currentAccount.value!!.getBalance()
+            } catch (e: Exception) {
+                _currentSession.value!!.balance = null
+            }
+
             return _currentSession.value!!.balance
         }
     }
