@@ -12,7 +12,6 @@ import io.github.skythrew.uniscol.data.network.NetworkRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
@@ -39,7 +38,7 @@ class RestaurantViewModel @Inject constructor(
     private val _bookings = MutableStateFlow<List<Booking>>(listOf())
     val bookings: StateFlow<List<Booking>> = _bookings
 
-    private val _bookingsDate = MutableStateFlow(Clock.System.now().format(UniscolRawDateFormat))
+    private val _bookingsDate = sessionManager.currentBookingsDate
     val bookingsDate: StateFlow<String> = _bookingsDate
 
     init {

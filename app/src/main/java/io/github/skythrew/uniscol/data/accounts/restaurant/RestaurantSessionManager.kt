@@ -1,10 +1,13 @@
 package io.github.skythrew.uniscol.data.accounts.restaurant
 
+import io.github.skythrew.uniscol.data.dates.UniscolRawDateFormat
 import io.github.skythrew.uniscol.data.dates.isoWeekNumber
 import io.github.skythrew.uniscol.data.network.NetworkRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.format
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +26,9 @@ class RestaurantSessionManager @Inject constructor(
 
     val _currentSession = MutableStateFlow<RestaurantSession?>(null)
     val currentSession: StateFlow<RestaurantSession?> = _currentSession
+
+    val currentBookingsDate = MutableStateFlow(Clock.System.now().format(
+        UniscolRawDateFormat))
 
     private val authenticatedAccounts = HashMap<Int, RestaurantSession>()
 
