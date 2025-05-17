@@ -1,6 +1,5 @@
 package io.github.skythrew.uniscol.data.accounts.restaurant
 
-import android.util.Log
 import io.github.skythrew.turboselfkt.core.TurboselfClient
 import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.data.accounts.AccountDao

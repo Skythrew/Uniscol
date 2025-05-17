@@ -1,15 +1,11 @@
 package io.github.skythrew.uniscol.data
 
 import android.content.Context
-import io.github.skythrew.uniscol.data.accounts.AccountRepository
-
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.github.skythrew.uniscol.MainActivity
-import io.github.skythrew.uniscol.data.UniscolDatabase
 import io.github.skythrew.uniscol.data.accounts.AccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountDao
 

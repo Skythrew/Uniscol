@@ -1,21 +1,34 @@
 package io.github.skythrew.uniscol.presentation.restaurant
 
-import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,44 +50,38 @@ import com.lightspark.composeqr.QrCodeView
 import io.github.skythrew.uniscol.R
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountFeature
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInterface
+import io.github.skythrew.uniscol.data.dates.UniscolLocalDateFormat
 import io.github.skythrew.uniscol.presentation.components.AccountSelector
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.format
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
     val viewModel: RestaurantViewModel = hiltViewModel()
+
     val accounts by viewModel.accounts.collectAsState(listOf())
     val account by viewModel.selectedAccount.collectAsState(null)
 
     val online by viewModel.networkRepository.online.collectAsState(false)
 
-    val balance by viewModel.balance.collectAsState(null)
+    val bookings by viewModel.bookings.collectAsState(listOf())
+    val bookingsDate by viewModel.bookingsDate.collectAsState()
+
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = Clock.System.now().toEpochMilliseconds()
+    )
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
 
     var showModalBottomSheet by remember { mutableStateOf(false) }
-
-    val animatedBalance = balance?.let { animateIntAsState(balance!!) }
-
-    /*val account by viewModel.selectedAccount.collectAsState(null)
-
-
-    LaunchedEffect(account?.loggedIn) {
-        Log.d("ACCOUNT", account?.loggedIn.toString())
-    }
-
-    LaunchedEffect(account) {
-        if (account != null) {
-            Log.d("COUCOU", "BEUH")
-            viewModel.fetchBalance()
-            Log.d("BALANCE", balance.toString())
-            Log.d("ACCOUNT", account?.loggedIn.toString())
-        }
-    }*/
+    var showDatePicker by remember { mutableStateOf(false) }
 
     Scaffold (
         topBar = {
@@ -96,7 +104,7 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                             }
 
                         account?.let {
-                            AccountSelector(accounts ?: listOf(), account!!) {
+                            AccountSelector(accounts, account!!) {
                                 viewModel.updateSelectedAccount(it as RestaurantAccountInterface)
                             }
                         }
@@ -107,8 +115,81 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
         }
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
-            if (online)
-                Text(animatedBalance?.value.toString())
+            if (online) {
+                Column (
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxSize().padding(8.dp)
+                ) {
+                    Box (
+                        modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(MaterialTheme.colorScheme.surfaceContainerLow).width(300.dp)
+                    ) {
+                        Column (
+                            modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Row (
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                FilledTonalIconButton(
+                                    onClick = {
+                                        viewModel.previousBookingsDate()
+                                    }
+                                ) {
+                                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Date précédente")
+                                }
+
+                                FilledTonalButton(
+                                    onClick = {
+                                        showDatePicker = true
+                                    }
+                                ) {
+                                    Text(LocalDate.parse(bookingsDate).format(UniscolLocalDateFormat))
+                                }
+                                FilledTonalIconButton(
+                                    onClick = {
+                                        viewModel.nextBookingsDate()
+                                    }
+                                ) {
+                                    Icon(
+                                        Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                                        contentDescription = "Date suivante"
+                                    )
+                                }
+                            }
+
+                            Column (
+                                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                if (bookings.isEmpty())
+                                    Text("Aucune réservation disponible")
+                                bookings.forEach { booking ->
+                                    booking.choices.forEachIndexed {index, choice ->
+                                        Row (
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Text(
+                                                choice.label ?: ("Choix " + (index + 1).toString()), style = MaterialTheme.typography.labelMedium)
+
+                                            Switch(
+                                                enabled = choice.enabled,
+                                                checked = choice.booked,
+                                                onCheckedChange = {
+                                                    viewModel.toggleBookingChoice(choice.id, !choice.booked)
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             else
                 Column (
                     verticalArrangement = Arrangement.Center,
@@ -130,40 +211,26 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                             textAlign = TextAlign.Center)
                     }
                 }
-            /*Column (
-                modifier = Modifier.fillMaxHeight().fillMaxWidth().padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                Card {
-                    Column (
-                        modifier = Modifier.size(300.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Column (
-                            verticalArrangement = Arrangement.spacedBy(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Box {
-                                QrCodeView(
-                                    data = "1234",
-                                    modifier = Modifier.size(220.dp),
-                                    dotShape = DotShape.Circle
-                                )
-                            }
-
-                            balance?.let {
-                                Text("Solde: " + (balance!! / 100).toString() + "€", style = MaterialTheme.typography.headlineSmall)
-                            }
-                        }
-                    }
-
-                }
-                Text(account?.label.toString())
-                Text(balance.toString())
-            }*/
         }
+
+        if (showDatePicker)
+            DatePickerDialog(
+                onDismissRequest = {
+                    showDatePicker = false
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showDatePicker = false
+
+                        if (datePickerState.selectedDateMillis != null)
+                            viewModel.updateBookingsDate(Instant.fromEpochMilliseconds(datePickerState.selectedDateMillis!!))
+                    }) {
+                        Text("OK")
+                    }
+                }
+            ) {
+                DatePicker(state = datePickerState)
+            }
 
 
         if (account?.cardNumber != null && showModalBottomSheet)

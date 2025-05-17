@@ -2,7 +2,6 @@ package io.github.skythrew.uniscol.data.accounts.restaurant
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
 
 enum class RestaurantAccountFeature {
     QRCode,

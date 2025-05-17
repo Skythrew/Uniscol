@@ -2,7 +2,6 @@ package io.github.skythrew.uniscol.presentation.settings.accounts.turboself
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,8 +34,6 @@ import androidx.navigation.NavController
 import io.github.skythrew.uniscol.R
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
-import kotlinx.coroutines.launch
-import kotlin.math.log
 
 @Composable
 fun TurboselfLoginScreen(navController: NavController, drawerState: DrawerState) {

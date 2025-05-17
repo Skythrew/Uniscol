@@ -1,14 +1,10 @@
 package io.github.skythrew.uniscol.presentation.settings.accounts.turboself
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.skythrew.turboselfkt.core.TurboselfClient
 import io.github.skythrew.uniscol.data.accounts.Account
-import io.github.skythrew.uniscol.data.accounts.AccountRepository
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountFeature
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInfos
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountRepository
@@ -54,7 +50,6 @@ class TurboselfLoginViewModel @Inject constructor (private val restaurantAccount
 
                 _loginError.value = false
             } catch (e: Exception) {
-                Log.e("ERROR", e.message.toString())
                 _loginError.value = true
             }
             _isLogging.value = false

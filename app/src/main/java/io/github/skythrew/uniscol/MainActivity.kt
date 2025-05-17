@@ -1,9 +1,6 @@
 package io.github.skythrew.uniscol
 
-import android.content.Context
-import android.media.Image
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -15,8 +12,11 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -24,55 +24,35 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
-import io.github.skythrew.uniscol.data.UniscolDatabase
 import io.github.skythrew.uniscol.data.accounts.Account
-import io.github.skythrew.uniscol.data.accounts.AccountFeature
-import io.github.skythrew.uniscol.data.accounts.AccountRepository
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInterface
-import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountRepository
-import io.github.skythrew.uniscol.data.services.ServiceType
 import io.github.skythrew.uniscol.presentation.UniscolViewModel
-import io.github.skythrew.uniscol.presentation.navigation.DrawerContent
-import io.github.skythrew.uniscol.presentation.navigation.HomeTab
-import io.github.skythrew.uniscol.presentation.navigation.SettingsTab
-import io.github.skythrew.uniscol.presentation.navigation.Tab
 import io.github.skythrew.uniscol.presentation.home.HomeScreen
 import io.github.skythrew.uniscol.presentation.home.HomeViewModel
 import io.github.skythrew.uniscol.presentation.navigation.AccountsSettings
 import io.github.skythrew.uniscol.presentation.navigation.Canteen
-import io.github.skythrew.uniscol.presentation.navigation.RestaurantSettingsTab
-import io.github.skythrew.uniscol.presentation.navigation.Root
+import io.github.skythrew.uniscol.presentation.navigation.DrawerContent
+import io.github.skythrew.uniscol.presentation.navigation.HomeTab
+import io.github.skythrew.uniscol.presentation.navigation.SettingsTab
+import io.github.skythrew.uniscol.presentation.navigation.Tab
 import io.github.skythrew.uniscol.presentation.navigation.TurboselfLogin
 import io.github.skythrew.uniscol.presentation.restaurant.RestaurantScreen
-import io.github.skythrew.uniscol.presentation.restaurant.RestaurantViewModel
 import io.github.skythrew.uniscol.presentation.settings.SettingsScreen
 import io.github.skythrew.uniscol.presentation.settings.accounts.AccountsSettingsScreen
-import io.github.skythrew.uniscol.presentation.settings.accounts.AccountsSettingsViewModel
 import io.github.skythrew.uniscol.presentation.settings.accounts.turboself.TurboselfLoginScreen
-import io.github.skythrew.uniscol.presentation.settings.accounts.turboself.TurboselfLoginViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -90,26 +70,47 @@ class MainActivity : ComponentActivity() {
             val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = currentNavBackStackEntry?.destination
 
-            val drawerState = rememberDrawerState(DrawerValue.Open)
+            val drawerState = rememberDrawerState(DrawerValue.Closed)
 
             val viewModel: UniscolViewModel by viewModels()
 
             val accounts: List<Account> by viewModel.accounts.collectAsState(listOf())
             val restaurantAccounts: List<RestaurantAccountInterface> by viewModel.restaurantAccounts.collectAsState(listOf())
 
-            var tabs: List<Tab> by remember { mutableStateOf(listOf()) }
+            var tabs: List<Tab> by remember { mutableStateOf(
+                if(accounts.isNotEmpty()) listOf(
+                Tab(
+                    name = "Accueil",
+                    icon = { Icons.Outlined.Home },
+                    iconSelected = { Icons.Filled.Home },
+                    destination = HomeTab
+                ),
+                Tab(
+                    name = "Paramètres",
+                    icon = { Icons.Outlined.Settings },
+                    iconSelected = { Icons.Filled.Settings },
+                    destination = SettingsTab
+                )
+                ) else listOf(
+                    Tab(
+                    name = "Paramètres",
+                    icon = { Icons.Outlined.Settings },
+                    iconSelected = { Icons.Filled.Settings },
+                    destination = SettingsTab
+                )
+            ) ) }
 
             LaunchedEffect(restaurantAccounts.size) {
-                val buildingTabs: MutableList<Tab> = mutableListOf()
+                val buildingTabs: MutableList<Tab> = tabs.toMutableList()
 
                 if (restaurantAccounts.isNotEmpty()) {
-                    Log.d("ACCOUNT CARD", restaurantAccounts[0].cardNumber.toString())
-                    buildingTabs.add(
-                        Tab(
-                            name = "Cantine",
-                            icon = R.drawable.outline_restaurant_24,
-                            iconSelected = R.drawable.baseline_restaurant_24,
-                            destination = Canteen
+                        buildingTabs.addAll(listOf(
+                            Tab(
+                                name = "Cantine",
+                                icon = { ImageVector.vectorResource(R.drawable.outline_restaurant_24) },
+                                iconSelected = { ImageVector.vectorResource(R.drawable.baseline_restaurant_24) },
+                                destination = Canteen
+                            )
                         )
                     )
                 }
@@ -145,7 +146,7 @@ class MainActivity : ComponentActivity() {
 
                     }
                 ) {
-                    NavHost(navController = navController, startDestination = HomeTab) {
+                    NavHost(navController = navController, startDestination = if (restaurantAccounts.isNotEmpty()) Canteen else HomeTab) {
 
                         composable<HomeTab> {
                             HomeScreen(navController, drawerState, HomeViewModel(viewModel, navController))
