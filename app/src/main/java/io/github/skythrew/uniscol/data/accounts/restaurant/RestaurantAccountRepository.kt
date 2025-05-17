@@ -42,8 +42,6 @@ class RestaurantAccountRepository @Inject constructor (
     }
 
     suspend fun insertAccount(account: Account, infos: RestaurantAccountInfos) {
-        val accountId = accountDao.insert(account)
-        Log.i("IDACC", accountId.toString())
-        restaurantAccountDao.insertInfos(infos.copy(accountId = accountId.toInt()))
+        restaurantAccountDao.insertAccountWithInfos(account, infos)
     }
 }

@@ -3,6 +3,8 @@ package io.github.skythrew.uniscol.data.accounts.restaurant
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
+import io.github.skythrew.uniscol.data.accounts.Account
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,5 +16,14 @@ interface RestaurantAccountDao {
     fun getAllAccounts(): Flow<List<RestaurantAccountWithInfos>>
 
     @Insert
-    fun insertInfos(infos: RestaurantAccountInfos)
+    suspend fun insertAccount(account: Account): Long
+
+    @Insert
+    suspend fun insertInfos(infos: RestaurantAccountInfos)
+
+    @Transaction
+    suspend fun insertAccountWithInfos(account: Account, infos: RestaurantAccountInfos) {
+        val accountId = insertAccount(account)
+        insertInfos(infos.copy(accountId = accountId.toInt()))
+    }
 }
