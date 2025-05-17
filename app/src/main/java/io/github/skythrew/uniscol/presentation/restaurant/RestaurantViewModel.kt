@@ -47,13 +47,16 @@ class RestaurantViewModel @Inject constructor(
                 sessionManager.setCurrentAccount(accounts.first1()[0])
 
             _cardNumber.value = sessionManager.currentAccount.value!!.cardNumber
+        }
 
+        viewModelScope.launch {
             selectedAccount.collect { account ->
-                if (account != null) {
-                    bookingsDate.collect { date ->
-                        _bookings.value = sessionManager.fetchBookings(date)
-                    }
-                }
+                _bookings.value = sessionManager.fetchBookings(bookingsDate.value)
+            }
+        }
+        viewModelScope.launch {
+            bookingsDate.collect { date ->
+                _bookings.value = sessionManager.fetchBookings(date)
             }
         }
     }
