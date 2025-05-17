@@ -39,6 +39,7 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInterface
+import io.github.skythrew.uniscol.presentation.UniscolTheme
 import io.github.skythrew.uniscol.presentation.UniscolViewModel
 import io.github.skythrew.uniscol.presentation.home.HomeScreen
 import io.github.skythrew.uniscol.presentation.home.HomeViewModel
@@ -118,7 +119,7 @@ class MainActivity : ComponentActivity() {
                 tabs = buildingTabs
             }
 
-            MaterialTheme {
+            UniscolTheme {
                 ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
