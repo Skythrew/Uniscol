@@ -101,7 +101,7 @@ class MainActivity : ComponentActivity() {
                 )
             ) ) }
 
-            LaunchedEffect(restaurantAccounts.size) {
+            LaunchedEffect(restaurantAccounts.isNotEmpty()) {
                 val buildingTabs: MutableList<Tab> = tabs.toMutableList()
 
                 if (restaurantAccounts.isNotEmpty()) {
