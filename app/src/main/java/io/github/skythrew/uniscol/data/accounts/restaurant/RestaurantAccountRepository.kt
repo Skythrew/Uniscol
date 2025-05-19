@@ -4,7 +4,9 @@ import io.github.skythrew.turboselfkt.core.TurboselfClient
 import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.data.accounts.AccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.turboself.TurboselfAccount
+import io.github.skythrew.uniscol.data.navigation.TabDao
 import io.github.skythrew.uniscol.data.services.Services
+import io.github.skythrew.uniscol.presentation.navigation.Routes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -13,7 +15,8 @@ import javax.inject.Singleton
 @Singleton
 class RestaurantAccountRepository @Inject constructor (
     private val accountDao: AccountDao,
-    private val restaurantAccountDao: RestaurantAccountDao
+    private val restaurantAccountDao: RestaurantAccountDao,
+    private val tabsDao: TabDao
 ) {
     private fun mapAccountToRestaurant(account: RestaurantAccountWithInfos): RestaurantAccountInterface = when (account.account.service) {
         Services.Turboself -> TurboselfAccount(
@@ -42,5 +45,6 @@ class RestaurantAccountRepository @Inject constructor (
 
     suspend fun insertAccount(account: Account, infos: RestaurantAccountInfos) {
         restaurantAccountDao.insertAccountWithInfos(account, infos)
+        tabsDao.enableByDestination(Routes.Restaurant)
     }
 }

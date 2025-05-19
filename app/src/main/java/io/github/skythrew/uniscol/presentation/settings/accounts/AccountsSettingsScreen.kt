@@ -35,7 +35,7 @@ import io.github.skythrew.uniscol.R
 import io.github.skythrew.uniscol.data.services.ServiceRepository
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
-import io.github.skythrew.uniscol.presentation.navigation.TurboselfLogin
+import io.github.skythrew.uniscol.presentation.navigation.Routes
 import io.github.skythrew.uniscol.presentation.settings.components.SettingsMenuButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -110,7 +110,7 @@ fun AccountsSettingsScreen(navController: NavController, drawerState: DrawerStat
                         )
                     }, label = "Turboself", description = null) {
                         showServicesModalBottomSheet = false
-                        navController.navigate(TurboselfLogin) { launchSingleTop = true }
+                        navController.navigate(Routes.TurboselfLogin) { launchSingleTop = true }
                     }
                 }
             }

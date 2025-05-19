@@ -1,5 +1,6 @@
 package io.github.skythrew.uniscol.data.accounts.restaurant
 
+import android.util.Log
 import io.github.skythrew.uniscol.data.dates.UniscolRawDateFormat
 import io.github.skythrew.uniscol.data.dates.isoWeekNumber
 import io.github.skythrew.uniscol.data.network.NetworkRepository
@@ -65,6 +66,7 @@ class RestaurantSessionManager @Inject constructor(
     }
 
     suspend fun fetchBookings(date: String, forceRefresh: Boolean = false): List<Booking> {
+        Log.d("DATA", "Fetching dates")
         if (_currentAccount.value == null) {
             return listOf()
         }
@@ -79,6 +81,8 @@ class RestaurantSessionManager @Inject constructor(
                 } catch (e: Exception) {
                     _currentSession.value!!.bookings = HashMap()
                 }
+            } else {
+                Log.d("DATA", "Already present")
             }
 
             return _currentSession.value!!.bookings[date] ?: listOf()

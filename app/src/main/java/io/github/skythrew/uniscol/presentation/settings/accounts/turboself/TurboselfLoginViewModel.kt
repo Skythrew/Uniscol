@@ -1,5 +1,6 @@
 package io.github.skythrew.uniscol.presentation.settings.accounts.turboself
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,6 +52,7 @@ class TurboselfLoginViewModel @Inject constructor (private val restaurantAccount
                 _loginError.value = false
             } catch (e: Exception) {
                 _loginError.value = true
+                Log.e("ERR", e.message.toString())
             }
             _isLogging.value = false
         }

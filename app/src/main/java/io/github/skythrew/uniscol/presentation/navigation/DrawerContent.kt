@@ -9,20 +9,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hasRoute
+import io.github.skythrew.uniscol.data.navigation.Tab
 
 @Composable
 fun DrawerItem(
     label: String,
     icon: ImageVector? = null,
     iconSelected: ImageVector? = null,
-    destination: Any,
+    destination: String,
     currentDestination: NavDestination?,
-    navigate: (destinationName: String?, destination: Any) -> Unit
+    navigate: (destination: String) -> Unit
 ) {
-    val selected = currentDestination?.hasRoute(destination::class) ?: false
+    val selected = currentDestination?.route == destination
     NavigationDrawerItem(
         label = { Text(label) },
         icon = {
@@ -32,7 +33,7 @@ fun DrawerItem(
             }
         },
         selected = selected,
-        onClick = { navigate(label, destination) },
+        onClick = { navigate(destination) },
         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
     )
 }
@@ -40,7 +41,7 @@ fun DrawerItem(
 @Composable
 fun DrawerContent(
     tabs: List<Tab>,
-    navigateToTab: (destinationName: String?, destination: Any) -> Unit,
+    navigateToTab: (destination: String) -> Unit,
     currentDestination: NavDestination?
 ) {
     Column (
@@ -49,8 +50,8 @@ fun DrawerContent(
         tabs.forEach { tab ->
             DrawerItem(
                 label = tab.name,
-                icon = tab.icon(),
-                iconSelected = tab.iconSelected(),
+                icon = tab.icon?.let { ImageVector.vectorResource(it) },
+                iconSelected = tab.iconSelected?.let { ImageVector.vectorResource(it) },
                 destination = tab.destination,
                 currentDestination = currentDestination,
                 navigate = navigateToTab

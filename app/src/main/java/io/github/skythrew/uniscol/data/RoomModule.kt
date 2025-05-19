@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.skythrew.uniscol.data.accounts.AccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountDao
+import io.github.skythrew.uniscol.data.navigation.TabDao
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -15,6 +16,11 @@ object AccountModule {
     @Provides
     fun provideUniscolDatabase(@ApplicationContext context: Context): UniscolDatabase {
         return UniscolDatabase.getDatabase(context)
+    }
+
+    @Provides
+    fun provideTabsDao(uniscolDatabase: UniscolDatabase): TabDao {
+        return uniscolDatabase.tabDao()
     }
 
     @Provides

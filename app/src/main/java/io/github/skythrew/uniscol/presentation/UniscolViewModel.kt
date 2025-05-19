@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.skythrew.uniscol.data.accounts.AccountRepository
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountRepository
+import io.github.skythrew.uniscol.data.navigation.TabRepository
 import io.github.skythrew.uniscol.data.network.NetworkRepository
 import javax.inject.Inject
 
@@ -11,8 +12,10 @@ import javax.inject.Inject
 class UniscolViewModel @Inject constructor(
     val networkRepository: NetworkRepository,
     private val accountsRepository: AccountRepository,
-    private val restaurantAccountsRepository: RestaurantAccountRepository
+    private val restaurantAccountsRepository: RestaurantAccountRepository,
+    private val tabsRepository: TabRepository
 ) : ViewModel() {
     val accounts = accountsRepository.getAllAccountsStream()
     val restaurantAccounts = restaurantAccountsRepository.getAllAccountsStream()
+    val tabs = tabsRepository.getAllTabsStream()
 }

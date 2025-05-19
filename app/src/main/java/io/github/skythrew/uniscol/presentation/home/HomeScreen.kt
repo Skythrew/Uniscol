@@ -13,8 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -25,9 +23,7 @@ import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
 
 @Composable
-fun HomeScreen(navController: NavController, drawerState: DrawerState, homeViewModel: HomeViewModel) {
-    val offline by homeViewModel.appViewModel.networkRepository.online.collectAsState(true)
-
+fun HomeScreen(navController: NavController, drawerState: DrawerState, navigateToSettings: () -> Unit) {
     Scaffold (
         topBar = { UniscolTopAppBar("Accueil", TopAppBarNavigation.Sidebar, drawerState, navController) }
     )
@@ -51,13 +47,11 @@ fun HomeScreen(navController: NavController, drawerState: DrawerState, homeViewM
                     textAlign = TextAlign.Center
                 )
 
-                Text(offline.toString())
-
                 ButtonWithIcon (
                     label = "Paramètres",
                     icon = Icons.Default.Settings
                 ) {
-                    homeViewModel.navigateToSettings()
+                    navigateToSettings()
                 }
             }
         }

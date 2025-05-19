@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
-import io.github.skythrew.uniscol.presentation.navigation.AccountsSettings
+import io.github.skythrew.uniscol.presentation.navigation.Routes
 import io.github.skythrew.uniscol.presentation.settings.components.SettingsMenuButton
 
 @Composable
@@ -46,7 +46,7 @@ fun SettingsScreen(navController: NavController, drawerState: DrawerState) {
                 SettingsMenuButton(icon = {
                     Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Comptes", modifier = Modifier.size(32.dp))
                 } , "Comptes", description = "Gérez vos différents comptes") {
-                    navController.navigate(AccountsSettings) { launchSingleTop = true }
+                    navController.navigate(Routes.AccountSettings) { launchSingleTop = true }
                 }
             }
 

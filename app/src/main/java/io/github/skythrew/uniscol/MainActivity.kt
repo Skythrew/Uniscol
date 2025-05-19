@@ -11,27 +11,14 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
-import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -42,14 +29,8 @@ import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInte
 import io.github.skythrew.uniscol.presentation.UniscolTheme
 import io.github.skythrew.uniscol.presentation.UniscolViewModel
 import io.github.skythrew.uniscol.presentation.home.HomeScreen
-import io.github.skythrew.uniscol.presentation.home.HomeViewModel
-import io.github.skythrew.uniscol.presentation.navigation.AccountsSettings
-import io.github.skythrew.uniscol.presentation.navigation.Canteen
 import io.github.skythrew.uniscol.presentation.navigation.DrawerContent
-import io.github.skythrew.uniscol.presentation.navigation.HomeTab
-import io.github.skythrew.uniscol.presentation.navigation.SettingsTab
-import io.github.skythrew.uniscol.presentation.navigation.Tab
-import io.github.skythrew.uniscol.presentation.navigation.TurboselfLogin
+import io.github.skythrew.uniscol.presentation.navigation.Routes
 import io.github.skythrew.uniscol.presentation.restaurant.RestaurantScreen
 import io.github.skythrew.uniscol.presentation.settings.SettingsScreen
 import io.github.skythrew.uniscol.presentation.settings.accounts.AccountsSettingsScreen
@@ -77,47 +58,7 @@ class MainActivity : ComponentActivity() {
 
             val accounts: List<Account> by viewModel.accounts.collectAsState(listOf())
             val restaurantAccounts: List<RestaurantAccountInterface> by viewModel.restaurantAccounts.collectAsState(listOf())
-
-            var tabs: List<Tab> by remember { mutableStateOf(
-                if(accounts.isNotEmpty()) listOf(
-                Tab(
-                    name = "Accueil",
-                    icon = { Icons.Outlined.Home },
-                    iconSelected = { Icons.Filled.Home },
-                    destination = HomeTab
-                ),
-                Tab(
-                    name = "Paramètres",
-                    icon = { Icons.Outlined.Settings },
-                    iconSelected = { Icons.Filled.Settings },
-                    destination = SettingsTab
-                )
-                ) else listOf(
-                    Tab(
-                    name = "Paramètres",
-                    icon = { Icons.Outlined.Settings },
-                    iconSelected = { Icons.Filled.Settings },
-                    destination = SettingsTab
-                )
-            ) ) }
-
-            LaunchedEffect(restaurantAccounts.isNotEmpty()) {
-                val buildingTabs: MutableList<Tab> = tabs.toMutableList()
-
-                if (restaurantAccounts.isNotEmpty()) {
-                        buildingTabs.addAll(listOf(
-                            Tab(
-                                name = "Cantine",
-                                icon = { ImageVector.vectorResource(R.drawable.outline_restaurant_24) },
-                                iconSelected = { ImageVector.vectorResource(R.drawable.baseline_restaurant_24) },
-                                destination = Canteen
-                            )
-                        )
-                    )
-                }
-
-                tabs = buildingTabs
-            }
+            val tabs by viewModel.tabs.collectAsState(listOf())
 
             UniscolTheme {
                 ModalNavigationDrawer(
@@ -128,8 +69,8 @@ class MainActivity : ComponentActivity() {
                         ) {
                             DrawerContent(
                                 tabs,
-                                { _: String?, destination: Any ->
-                                    if (currentDestination?.hasRoute(destination::class) != true) {
+                                {destination: String ->
+                                    if (currentDestination?.route != destination) {
                                         navController.navigate(destination) {
                                             popUpTo(navController.graph.id) {
                                                 inclusive = true
@@ -147,36 +88,36 @@ class MainActivity : ComponentActivity() {
 
                     }
                 ) {
-                    NavHost(navController = navController, startDestination = if (restaurantAccounts.isNotEmpty()) Canteen else HomeTab) {
+                    NavHost(navController = navController, startDestination = Routes.Home) {
 
-                        composable<HomeTab> {
-                            HomeScreen(navController, drawerState, HomeViewModel(viewModel, navController))
+                        composable(Routes.Home){
+                            HomeScreen(navController, drawerState) {
+                                navController.navigate("settings")
+                            }
                         }
 
-                        composable<SettingsTab> {
+                        composable(Routes.Settings) {
                             SettingsScreen(navController, drawerState)
                         }
 
-                        composable<AccountsSettings> (
-                            enterTransition = {
-                                fadeIn(
-                                    animationSpec = tween(
-                                        200, easing = LinearEasing
-                                    )
-                                ) + slideIntoContainer(
-                                    animationSpec = tween(200, easing = EaseIn),
-                                    towards = AnimatedContentTransitionScope.SlideDirection.Start
+                        composable(Routes.AccountSettings, enterTransition = {
+                            fadeIn(
+                                animationSpec = tween(
+                                    200, easing = LinearEasing
                                 )
-                            }
-                        ) {
+                            ) + slideIntoContainer(
+                                animationSpec = tween(200, easing = EaseIn),
+                                towards = AnimatedContentTransitionScope.SlideDirection.Start
+                            )
+                        }) {
                             AccountsSettingsScreen(navController, drawerState)
                         }
 
-                        composable<TurboselfLogin> {
+                        composable(Routes.TurboselfLogin) {
                             TurboselfLoginScreen(navController, drawerState)
                         }
 
-                        composable<Canteen> {
+                        composable(Routes.Restaurant) {
                             RestaurantScreen(navController, drawerState)
                         }
                     }
