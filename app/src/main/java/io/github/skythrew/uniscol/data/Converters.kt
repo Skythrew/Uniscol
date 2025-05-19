@@ -3,6 +3,7 @@ package io.github.skythrew.uniscol.data
 import androidx.room.TypeConverter
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountFeature
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountFeature.entries
+import io.github.skythrew.uniscol.data.navigation.TabIcon
 
 class Converters {
     @TypeConverter
@@ -23,5 +24,15 @@ class Converters {
     @TypeConverter
     fun restaurantFeatureToString(features: List<RestaurantAccountFeature>): String {
         return features.joinToString(",") { it.name }
+    }
+
+    @TypeConverter
+    fun tabIconFromString(icon: String): TabIcon {
+        return TabIcon.valueOf(icon)
+    }
+
+    @TypeConverter
+    fun tabIconToString(icon: TabIcon): String {
+        return icon.name
     }
 }

@@ -13,7 +13,8 @@ import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInfos
 import io.github.skythrew.uniscol.data.navigation.Tab
 import io.github.skythrew.uniscol.data.navigation.TabDao
-import io.github.skythrew.uniscol.presentation.navigation.Routes
+import io.github.skythrew.uniscol.data.navigation.Routes
+import io.github.skythrew.uniscol.data.navigation.TabIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -30,8 +31,8 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
                 Tab(
                     id = 0,
                     name = "Accueil",
-                    icon = R.drawable.outline_home_24,
-                    iconSelected = R.drawable.baseline_home_24,
+                    icon = TabIcon.HOME,
+                    iconSelected = TabIcon.HOME_SELECTED,
                     enabled = true,
                     destination = Routes.Home,
                     position = 0
@@ -39,8 +40,8 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
                 Tab(
                     id = 1,
                     name = "Paramètres",
-                    icon = R.drawable.outline_settings_24,
-                    iconSelected = R.drawable.baseline_settings_24,
+                    icon = TabIcon.SETTINGS,
+                    iconSelected = TabIcon.SETTINGS_SELECTED,
                     enabled = true,
                     destination = Routes.Settings,
                     position = 9999
@@ -48,8 +49,8 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
                 Tab(
                     id = 2,
                     name = "Cantine",
-                    icon = R.drawable.outline_restaurant_24,
-                    iconSelected = R.drawable.baseline_restaurant_24,
+                    icon = TabIcon.RESTAURANT,
+                    iconSelected = TabIcon.RESTAURANT_SELECTED,
                     enabled = false,
                     destination = Routes.Restaurant,
                     position = 1
@@ -66,7 +67,7 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
     }
 }
 
-@Database(entities = [Account::class, RestaurantAccountInfos::class, Tab::class], version = 4, exportSchema = false)
+@Database(entities = [Account::class, RestaurantAccountInfos::class, Tab::class], version = 5, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class UniscolDatabase: RoomDatabase() {
     abstract fun accountDao(): AccountDao

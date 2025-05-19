@@ -6,7 +6,7 @@ import io.github.skythrew.uniscol.data.accounts.AccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.turboself.TurboselfAccount
 import io.github.skythrew.uniscol.data.navigation.TabDao
 import io.github.skythrew.uniscol.data.services.Services
-import io.github.skythrew.uniscol.presentation.navigation.Routes
+import io.github.skythrew.uniscol.data.navigation.Routes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

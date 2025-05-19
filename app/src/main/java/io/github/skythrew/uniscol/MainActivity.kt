@@ -30,11 +30,12 @@ import io.github.skythrew.uniscol.presentation.UniscolTheme
 import io.github.skythrew.uniscol.presentation.UniscolViewModel
 import io.github.skythrew.uniscol.presentation.home.HomeScreen
 import io.github.skythrew.uniscol.presentation.navigation.DrawerContent
-import io.github.skythrew.uniscol.presentation.navigation.Routes
+import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.presentation.restaurant.RestaurantScreen
 import io.github.skythrew.uniscol.presentation.settings.SettingsScreen
 import io.github.skythrew.uniscol.presentation.settings.accounts.AccountsSettingsScreen
 import io.github.skythrew.uniscol.presentation.settings.accounts.turboself.TurboselfLoginScreen
+import io.github.skythrew.uniscol.presentation.settings.ui.InterfaceSettingsScreen
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -119,6 +120,10 @@ class MainActivity : ComponentActivity() {
 
                         composable(Routes.Restaurant) {
                             RestaurantScreen(navController, drawerState)
+                        }
+
+                        composable(Routes.InterfaceSettings) {
+                            InterfaceSettingsScreen(navController, drawerState)
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package io.github.skythrew.uniscol.presentation.navigation
 
+import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -8,7 +9,9 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -28,8 +31,8 @@ fun DrawerItem(
         label = { Text(label) },
         icon = {
             when(selected) {
-                true -> iconSelected?.let { Icon(imageVector = iconSelected, contentDescription = label) }
-                false -> icon?.let { Icon(imageVector = icon, contentDescription = label) }
+                true -> iconSelected?.let { Icon(iconSelected, contentDescription = label) }
+                false -> icon?.let { Icon(icon, contentDescription = label) }
             }
         },
         selected = selected,
@@ -50,8 +53,8 @@ fun DrawerContent(
         tabs.forEach { tab ->
             DrawerItem(
                 label = tab.name,
-                icon = tab.icon?.let { ImageVector.vectorResource(it) },
-                iconSelected = tab.iconSelected?.let { ImageVector.vectorResource(it) },
+                icon = tab.icon?.imageVector?.let { it() },
+                iconSelected = tab.iconSelected?.imageVector?.let { it() },
                 destination = tab.destination,
                 currentDestination = currentDestination,
                 navigate = navigateToTab
