@@ -72,6 +72,8 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
     val bookings by viewModel.bookings.collectAsState(listOf())
     val bookingsDate by viewModel.bookingsDate.collectAsState()
 
+    val balance by viewModel.balance.collectAsState(null)
+
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = Clock.System.now().toEpochMilliseconds()
     )
@@ -121,6 +123,22 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize().padding(8.dp)
                 ) {
+                    if (balance != null)
+                        Box (
+                            modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(MaterialTheme.colorScheme.surfaceContainerLow).width(300.dp)
+                        ) {
+                            Column (
+                                modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Row (
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                ) { Text("Solde:", style = MaterialTheme.typography.labelLarge)
+                                    Text((balance!!.toDouble() / 100).toString() + "€") }
+                            }
+                        }
+
                     Box (
                         modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(MaterialTheme.colorScheme.surfaceContainerLow).width(300.dp)
                     ) {

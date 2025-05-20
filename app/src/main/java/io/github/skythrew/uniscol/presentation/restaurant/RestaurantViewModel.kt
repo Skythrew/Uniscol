@@ -30,10 +30,9 @@ class RestaurantViewModel @Inject constructor(
     val accounts = accountsRepository.getAllAccountsStream()
 
     val selectedAccount = sessionManager.currentAccount
-    val session = sessionManager.currentSession
 
-    private val _cardNumber = MutableStateFlow<String?>(null)
-    val cardNumber: StateFlow<String?> = _cardNumber
+    private val _balance = MutableStateFlow<Int?>(null)
+    val balance = _balance
 
     private val _bookings = MutableStateFlow<List<Booking>>(listOf())
     val bookings: StateFlow<List<Booking>> = _bookings
@@ -45,15 +44,15 @@ class RestaurantViewModel @Inject constructor(
         viewModelScope.launch {
             if (selectedAccount.value == null)
                 sessionManager.setCurrentAccount(accounts.first1()[0])
-
-            _cardNumber.value = sessionManager.currentAccount.value!!.cardNumber
         }
 
         viewModelScope.launch {
-            selectedAccount.collect { account ->
+            selectedAccount.collect {
                 _bookings.value = sessionManager.fetchBookings(bookingsDate.value)
+                _balance.value = sessionManager.fetchBalance()
             }
         }
+
         viewModelScope.launch {
             bookingsDate.collect { date ->
                 _bookings.value = sessionManager.fetchBookings(date)
