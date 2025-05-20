@@ -15,6 +15,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,11 +27,11 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInterface
+import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.presentation.UniscolTheme
 import io.github.skythrew.uniscol.presentation.UniscolViewModel
 import io.github.skythrew.uniscol.presentation.home.HomeScreen
 import io.github.skythrew.uniscol.presentation.navigation.DrawerContent
-import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.presentation.restaurant.RestaurantScreen
 import io.github.skythrew.uniscol.presentation.settings.SettingsScreen
 import io.github.skythrew.uniscol.presentation.settings.accounts.AccountsSettingsScreen
@@ -60,6 +61,12 @@ class MainActivity : ComponentActivity() {
             val accounts: List<Account> by viewModel.accounts.collectAsState(listOf())
             val restaurantAccounts: List<RestaurantAccountInterface> by viewModel.restaurantAccounts.collectAsState(listOf())
             val tabs by viewModel.tabs.collectAsState(listOf())
+
+            LaunchedEffect(restaurantAccounts.isEmpty()) {
+                if (restaurantAccounts.isEmpty()) {
+                    viewModel.disableTab(Routes.Restaurant)
+                }
+            }
 
             UniscolTheme {
                 ModalNavigationDrawer(

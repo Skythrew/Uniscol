@@ -18,10 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
-import io.github.skythrew.uniscol.data.navigation.Routes
-import io.github.skythrew.uniscol.presentation.settings.components.SettingsMenuButton
+import io.github.skythrew.uniscol.presentation.settings.components.SettingsMenuGoButton
 
 @Composable
 fun SettingsScreen(navController: NavController, drawerState: DrawerState) {
@@ -41,13 +41,13 @@ fun SettingsScreen(navController: NavController, drawerState: DrawerState) {
             Column (
                 modifier = Modifier.padding(horizontal = 8.dp),
             ) {
-                SettingsMenuButton(icon = {
+                SettingsMenuGoButton(icon = {
                     Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Comptes", modifier = Modifier.size(32.dp))
                 } , "Comptes", description = "Gérez vos différents comptes") {
                     navController.navigate(Routes.AccountSettings) { launchSingleTop = true }
                 }
 
-                SettingsMenuButton(icon = {
+                SettingsMenuGoButton(icon = {
                     Icon(imageVector = Icons.Default.Build, contentDescription = "Interface", modifier = Modifier.size(32.dp))
                 } , "Interface", description = "Personnalisez l'interface ") {
                     navController.navigate(Routes.InterfaceSettings) { launchSingleTop = true }

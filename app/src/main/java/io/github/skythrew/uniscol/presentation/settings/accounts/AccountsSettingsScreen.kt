@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -32,10 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import io.github.skythrew.uniscol.R
+import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.data.services.ServiceRepository
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
-import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.presentation.settings.components.SettingsMenuButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,17 +81,26 @@ fun AccountsSettingsScreen(navController: NavController, drawerState: DrawerStat
                 ) {
                     accounts.forEach { account ->
                         SettingsMenuButton(
-                            icon = {
+                            prefix = {
                                 Image(
                                     painter = painterResource(serviceRepository.getIconForService(account.service)),
                                     contentDescription = account.service.name,
                                     modifier = Modifier.size(32.dp)
                                 )
                             },
+                            suffix = {
+                                IconButton(
+                                    onClick = {
+                                        viewModel.deleteAccount(account)
+                                    }
+                                ) {
+                                    Icon(Icons.Default.Delete, contentDescription = "Supprimer", tint = MaterialTheme.colorScheme.error)
+                                }
+                            },
                             label = account.username ?: account.service.name,
                             labelStyle = MaterialTheme.typography.labelLarge,
                             description = null
-                        ) { }
+                        ) {}
                     }
                 }
         }
@@ -102,7 +113,7 @@ fun AccountsSettingsScreen(navController: NavController, drawerState: DrawerStat
                 sheetState = modalBottomSheetState
             ) {
                 Column {
-                    SettingsMenuButton(icon = {
+                    SettingsMenuButton(prefix = {
                         Image(
                             painter = painterResource(R.drawable.turboself),
                             contentDescription = "Turboself",

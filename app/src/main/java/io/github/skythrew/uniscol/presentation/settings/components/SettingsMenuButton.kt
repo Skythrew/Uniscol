@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun SettingsMenuButton(
-    icon: @Composable () -> Unit = {},
+    prefix: @Composable () -> Unit = {},
+    suffix: @Composable () -> Unit = {},
     label: String,
     labelStyle: TextStyle = MaterialTheme.typography.headlineSmall,
     description: String?,
@@ -37,7 +38,7 @@ fun SettingsMenuButton(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                icon()
+                prefix()
 
                 Column {
                     Text(label, style = labelStyle)
@@ -48,8 +49,27 @@ fun SettingsMenuButton(
                 }
             }
 
-            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "")
+            suffix()
         }
-
     }
+}
+
+@Composable
+fun SettingsMenuGoButton(
+    icon: @Composable () -> Unit = {},
+    label: String,
+    labelStyle: TextStyle = MaterialTheme.typography.headlineSmall,
+    description: String?,
+    onClick: () -> Unit
+) {
+    SettingsMenuButton(
+        icon,
+        {
+            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "")
+        },
+        label,
+        labelStyle,
+        description,
+        onClick
+    )
 }

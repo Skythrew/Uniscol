@@ -6,14 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import io.github.skythrew.uniscol.R
 import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.data.accounts.AccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInfos
+import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.data.navigation.Tab
 import io.github.skythrew.uniscol.data.navigation.TabDao
-import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.data.navigation.TabIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,7 +66,7 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
     }
 }
 
-@Database(entities = [Account::class, RestaurantAccountInfos::class, Tab::class], version = 5, exportSchema = false)
+@Database(entities = [Account::class, RestaurantAccountInfos::class, Tab::class], version = 6, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class UniscolDatabase: RoomDatabase() {
     abstract fun accountDao(): AccountDao

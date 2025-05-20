@@ -1,11 +1,13 @@
 package io.github.skythrew.uniscol.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.skythrew.uniscol.data.accounts.AccountRepository
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountRepository
 import io.github.skythrew.uniscol.data.navigation.TabRepository
 import io.github.skythrew.uniscol.data.network.NetworkRepository
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,4 +20,10 @@ class UniscolViewModel @Inject constructor(
     val accounts = accountsRepository.getAllAccountsStream()
     val restaurantAccounts = restaurantAccountsRepository.getAllAccountsStream()
     val tabs = tabsRepository.getAllTabsStream()
+
+    fun disableTab(destination: String) {
+        viewModelScope.launch {
+            tabsRepository.disableDestination(destination)
+        }
+    }
 }
