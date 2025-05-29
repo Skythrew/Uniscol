@@ -10,12 +10,13 @@ open class Account(
     @PrimaryKey(autoGenerate = true)
     override val id: Int = 0,
     override val service: Services,
-    override val type: ServiceType,
     override val label: String? = null,
     override val username: String? = null,
     override val password: String? = null,
     override val accessToken: String? = null,
     override val accessTokenExpiration: Long? = null,
     override val refreshToken: String? = null,
-    override val refreshTokenExpiration: Long? = null
+    override val refreshTokenExpiration: Long? = null,
+    override val supportCanteen: Boolean,
+    override val supportConversation: Boolean
 ) : AccountInterface

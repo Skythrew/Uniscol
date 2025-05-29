@@ -66,7 +66,7 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
     }
 }
 
-@Database(entities = [Account::class, RestaurantAccountInfos::class, Tab::class], version = 6, exportSchema = false)
+@Database(entities = [Account::class, RestaurantAccountInfos::class, Tab::class], version = 7, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class UniscolDatabase: RoomDatabase() {
     abstract fun accountDao(): AccountDao

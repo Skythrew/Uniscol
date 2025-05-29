@@ -12,7 +12,7 @@ interface RestaurantAccountDao {
     @Query("SELECT * FROM accounts JOIN restaurant_account_infos ON restaurant_account_infos.accountId = accounts.id WHERE id = :id")
     fun getAccountById(id: Int): Flow<RestaurantAccountWithInfos>
 
-    @Query("SELECT * FROM accounts JOIN restaurant_account_infos ON restaurant_account_infos.accountId = accounts.id WHERE type = 'CANTEEN'")
+    @Query("SELECT * FROM accounts JOIN restaurant_account_infos ON restaurant_account_infos.accountId = accounts.id WHERE supportCanteen = 1")
     fun getAllAccounts(): Flow<List<RestaurantAccountWithInfos>>
 
     @Insert

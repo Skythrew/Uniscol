@@ -10,7 +10,6 @@ enum class AccountFeature {
 data class AccountWithFeatures (
     override val id: Int,
     override val service: Services,
-    override val type: ServiceType,
     override val label: String?,
     override val username: String?,
     override val password: String?,
@@ -18,5 +17,7 @@ data class AccountWithFeatures (
     override val accessTokenExpiration: Long?,
     override val refreshToken: String?,
     override val refreshTokenExpiration: Long?,
-    val features: List<AccountFeature>
+    val features: List<AccountFeature>,
+    override val supportCanteen: Boolean,
+    override val supportConversation: Boolean
 ) : AccountInterface

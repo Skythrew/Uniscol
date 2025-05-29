@@ -6,7 +6,6 @@ import io.github.skythrew.uniscol.data.services.Services
 interface AccountInterface {
     val id: Int
     val service: Services
-    val type: ServiceType
     val label: String?
     val username: String?
     val password: String?
@@ -14,4 +13,6 @@ interface AccountInterface {
     val accessTokenExpiration: Long?
     val refreshToken: String?
     val refreshTokenExpiration: Long?
+    val supportCanteen: Boolean
+    val supportConversation: Boolean
 }

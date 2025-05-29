@@ -3,6 +3,7 @@ package io.github.skythrew.uniscol.data.accounts.restaurant
 import android.util.Log
 import io.github.skythrew.uniscol.data.dates.UniscolRawDateFormat
 import io.github.skythrew.uniscol.data.dates.isoWeekNumber
+import io.github.skythrew.uniscol.data.network.AuthenticationRepository
 import io.github.skythrew.uniscol.data.network.NetworkRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,8 @@ data class RestaurantSession(
 
 @Singleton
 class RestaurantSessionManager @Inject constructor(
-    val networkRepository: NetworkRepository
+    val networkRepository: NetworkRepository,
+    val authenticationRepository: AuthenticationRepository
 ) {
     val _currentAccount = MutableStateFlow<RestaurantAccountInterface?>(null)
     val currentAccount: StateFlow<RestaurantAccountInterface?> = _currentAccount
@@ -53,8 +55,7 @@ class RestaurantSessionManager @Inject constructor(
         }
         else {
             try {
-                if (!_currentAccount.value!!.loggedIn)
-                    _currentAccount.value!!.login()
+                authenticationRepository.login(_currentAccount.value!!)
 
                 _currentSession.value!!.balance = _currentAccount.value!!.getBalance()
             } catch (e: Exception) {
@@ -73,8 +74,7 @@ class RestaurantSessionManager @Inject constructor(
         else {
             if (forceRefresh || !_currentSession.value!!.bookings.containsKey(date)) {
                 try {
-                    if (!_currentAccount.value!!.loggedIn)
-                        _currentAccount.value!!.login()
+                    authenticationRepository.login(_currentAccount.value!!)
 
                     _currentSession.value!!.bookings =
                         _currentAccount.value!!.getBookingsForWeek(LocalDate.parse(date).isoWeekNumber())

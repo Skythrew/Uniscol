@@ -3,7 +3,8 @@ package io.github.skythrew.uniscol.data.services
 import androidx.compose.ui.graphics.vector.ImageVector
 
 enum class ServiceType {
-    CANTEEN
+    CANTEEN,
+    CONVERSATION
 }
 
 enum class Services {

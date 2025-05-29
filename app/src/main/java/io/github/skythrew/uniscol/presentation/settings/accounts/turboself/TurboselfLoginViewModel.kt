@@ -35,14 +35,15 @@ class TurboselfLoginViewModel @Inject constructor (private val restaurantAccount
 
                 restaurantAccountRepository.insertAccount(Account(
                     service = Services.Turboself,
-                    type = ServiceType.CANTEEN,
                     label = host.firstName + ' ' + host.lastName,
                     username = authInfos.username,
                     password = authInfos.password,
                     accessToken = authInfos.accessToken.value,
                     accessTokenExpiration = authInfos.accessToken.expirationDate.toEpochMilliseconds(),
                     refreshToken = authInfos.refreshToken.value,
-                    refreshTokenExpiration = authInfos.refreshToken.expirationDate.toEpochMilliseconds()
+                    refreshTokenExpiration = authInfos.refreshToken.expirationDate.toEpochMilliseconds(),
+                    supportCanteen = true,
+                    supportConversation = false
                 ), infos = RestaurantAccountInfos(
                     accountId = 0,
                     cardNumber = host.cardNumber.toString(),
