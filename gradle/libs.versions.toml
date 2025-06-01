@@ -18,7 +18,7 @@ composeBom = "2024.09.00"
 navigationCompose = "2.9.0"
 roomRuntime = "2.7.1"
 turboselfktAndroid = "1.0.1"
-edificekt = "1.0.3"
+edificekt = "1.0.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
