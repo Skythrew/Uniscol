@@ -52,14 +52,22 @@ data class MailboxRoute(
 
 
 object Routes {
-    @Serializable object Home
-    @Serializable object Settings
-    @Serializable object Restaurant
-    @Serializable object AccountSettings
-    @Serializable object InterfaceSettings
-    @Serializable object TurboselfLogin
-    @Serializable object EdificeLogin
-    @Serializable object Mailbox
+    @Serializable
+    object Home
+    @Serializable
+    object Settings
+    @Serializable
+    object Restaurant
+    @Serializable
+    object AccountSettings
+    @Serializable
+    object InterfaceSettings
+    @Serializable
+    object TurboselfLogin
+    @Serializable
+    object EdificeLogin
+    @Serializable
+    object Mailbox
 
     @Serializable
     data class Message(val id: String, val title: String)

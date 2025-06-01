@@ -5,7 +5,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TabRepository @Inject constructor (private val tabDao: TabDao) {
+class TabRepository @Inject constructor(private val tabDao: TabDao) {
 
     suspend fun enableTab(tab: Tab) = tabDao.enable(tab.id)
     suspend fun disableTab(tab: Tab) = tabDao.disable(tab.id)

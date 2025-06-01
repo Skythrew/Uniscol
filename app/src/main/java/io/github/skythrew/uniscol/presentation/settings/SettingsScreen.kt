@@ -36,22 +36,34 @@ fun SettingsScreen(navController: NavController, drawerState: DrawerState) {
                 navController = navController
             )
         }
-    ) {padding ->
-        Box (
-            modifier = Modifier.padding(padding).fillMaxHeight().fillMaxWidth().background(MaterialTheme.colorScheme.surface),
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxHeight()
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface),
         ) {
-            Column (
+            Column(
                 modifier = Modifier.padding(horizontal = 8.dp),
             ) {
                 SettingsMenuGoButton(icon = {
-                    Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Comptes", modifier = Modifier.size(32.dp))
-                } , "Comptes", description = "Gérez vos différents comptes") {
+                    Icon(
+                        imageVector = Icons.Default.AccountCircle,
+                        contentDescription = "Comptes",
+                        modifier = Modifier.size(32.dp)
+                    )
+                }, "Comptes", description = "Gérez vos différents comptes") {
                     navController.navigate(Routes.AccountSettings) { launchSingleTop = true }
                 }
 
                 SettingsMenuGoButton(icon = {
-                    Icon(imageVector = Icons.Default.Build, contentDescription = "Interface", modifier = Modifier.size(32.dp))
-                } , "Interface", description = "Personnalisez l'interface ") {
+                    Icon(
+                        imageVector = Icons.Default.Build,
+                        contentDescription = "Interface",
+                        modifier = Modifier.size(32.dp)
+                    )
+                }, "Interface", description = "Personnalisez l'interface ") {
                     navController.navigate(Routes.InterfaceSettings) { launchSingleTop = true }
                 }
             }

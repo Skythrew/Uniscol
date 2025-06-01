@@ -13,7 +13,11 @@ class MailboxState @Inject constructor() {
 
     fun showSnackbar(message: String, duration: SnackbarDuration, withDismiss: Boolean) {
         GlobalScope.launch {
-            snackbarHostState.showSnackbar(message, duration = duration, withDismissAction = withDismiss)
+            snackbarHostState.showSnackbar(
+                message,
+                duration = duration,
+                withDismissAction = withDismiss
+            )
         }
     }
 }

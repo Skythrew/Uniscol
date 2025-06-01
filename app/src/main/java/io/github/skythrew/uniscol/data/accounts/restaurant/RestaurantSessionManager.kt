@@ -29,8 +29,11 @@ class RestaurantSessionManager @Inject constructor(
     val _currentSession = MutableStateFlow<RestaurantSession?>(null)
     val currentSession: StateFlow<RestaurantSession?> = _currentSession
 
-    val currentBookingsDate = MutableStateFlow(Clock.System.now().format(
-        UniscolRawDateFormat))
+    val currentBookingsDate = MutableStateFlow(
+        Clock.System.now().format(
+            UniscolRawDateFormat
+        )
+    )
 
     private val authenticatedAccounts = HashMap<Int, RestaurantSession>()
 
@@ -51,8 +54,7 @@ class RestaurantSessionManager @Inject constructor(
     suspend fun fetchBalance(): Int? {
         if (_currentAccount.value == null) {
             return null
-        }
-        else {
+        } else {
             try {
                 authenticationRepository.login(_currentAccount.value!!)
 
@@ -68,8 +70,7 @@ class RestaurantSessionManager @Inject constructor(
     suspend fun fetchBookings(date: String, forceRefresh: Boolean = false): List<Booking> {
         if (_currentAccount.value == null) {
             return listOf()
-        }
-        else {
+        } else {
             if (forceRefresh || !_currentSession.value!!.bookings.containsKey(date)) {
                 try {
                     authenticationRepository.login(_currentAccount.value!!)
@@ -94,7 +95,8 @@ class RestaurantSessionManager @Inject constructor(
 
         try {
             this._currentAccount.value!!.toggleBookChoice(LocalDate.parse(date), id, book)
-        } catch (_: Exception) {}
+        } catch (_: Exception) {
+        }
 
         return fetchBookings(date, forceRefresh = true)
     }

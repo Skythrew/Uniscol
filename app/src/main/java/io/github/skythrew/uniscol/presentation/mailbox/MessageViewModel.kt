@@ -1,9 +1,7 @@
 package io.github.skythrew.uniscol.presentation.mailbox
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +19,7 @@ class MessageViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     val mailboxState: MailboxState,
     private val conversationSessionManager: ConversationSessionManager
-): ViewModel() {
+) : ViewModel() {
     val account = conversationSessionManager.currentAccount.value
 
     private val _message: MutableStateFlow<Message?> = MutableStateFlow(null)

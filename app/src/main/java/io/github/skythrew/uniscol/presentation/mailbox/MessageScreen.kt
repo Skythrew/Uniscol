@@ -5,14 +5,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -52,10 +48,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import io.github.skythrew.uniscol.R
-import io.github.skythrew.uniscol.data.accounts.conversation.Attachment
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,7 +80,7 @@ fun MessageScreen(navController: NavController, drawerState: DrawerState, messag
         viewModel.fetchMessage(messageId)
     }
 
-    Scaffold (
+    Scaffold(
         topBar = {
             UniscolTopAppBar(
                 title = "",
@@ -108,7 +102,10 @@ fun MessageScreen(navController: NavController, drawerState: DrawerState, messag
                                     viewModel.toggleUnread()
                                 }
                             ) {
-                                Icon(painterResource(if (message!!.unread) R.drawable.outline_visibility_off_24 else R.drawable.outline_visibility_24), contentDescription = "Supprimer")
+                                Icon(
+                                    painterResource(if (message!!.unread) R.drawable.outline_visibility_off_24 else R.drawable.outline_visibility_24),
+                                    contentDescription = "Supprimer"
+                                )
                             }
 
                         IconButton(
@@ -129,11 +126,16 @@ fun MessageScreen(navController: NavController, drawerState: DrawerState, messag
             )
         }
     ) { padding ->
-        Column (
-            modifier = Modifier.padding(padding).verticalScroll(rememberScrollState())
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
         ) {
-            Row (
-                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.secondaryContainer).padding(8.dp),
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(message?.subject ?: "", style = MaterialTheme.typography.headlineSmall)
@@ -142,9 +144,12 @@ fun MessageScreen(navController: NavController, drawerState: DrawerState, messag
             if (message == null)
                 LinearProgressIndicator()
 
-            Text(AnnotatedString.fromHtml(message?.body.toString()), modifier = Modifier.padding(8.dp))
+            Text(
+                AnnotatedString.fromHtml(message?.body.toString()),
+                modifier = Modifier.padding(8.dp)
+            )
 
-            Column (
+            Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 attachments.forEach { attachment ->
@@ -155,28 +160,44 @@ fun MessageScreen(navController: NavController, drawerState: DrawerState, messag
                         }
                     ) {
                         Box {
-                            Column (
-                                modifier = Modifier.padding(16.dp).fillMaxHeight().align(Alignment.CenterStart),
+                            Column(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxHeight()
+                                    .align(Alignment.CenterStart),
                                 verticalArrangement = Arrangement.Center
                             ) {
                                 if (downloadingAttachments.contains(attachment.id))
                                     CircularProgressIndicator()
                                 else
-                                    Icon(painterResource(R.drawable.outline_attachment_24), contentDescription = "Pièce jointe")
+                                    Icon(
+                                        painterResource(R.drawable.outline_attachment_24),
+                                        contentDescription = "Pièce jointe"
+                                    )
                             }
 
-                            Row (
-                                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                            Row(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Column (
+                                Column(
                                     verticalArrangement = Arrangement.spacedBy(8.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    Text(attachment.name, style = MaterialTheme.typography.labelLarge)
+                                    Text(
+                                        attachment.name,
+                                        style = MaterialTheme.typography.labelLarge
+                                    )
 
-                                    Text(Formatter.formatFileSize(LocalContext.current, attachment.size), style = MaterialTheme.typography.bodySmall)
+                                    Text(
+                                        Formatter.formatFileSize(
+                                            LocalContext.current,
+                                            attachment.size
+                                        ), style = MaterialTheme.typography.bodySmall
+                                    )
                                 }
                             }
                         }
@@ -193,23 +214,26 @@ fun MessageScreen(navController: NavController, drawerState: DrawerState, messag
                 showDeleteDialog.value = false
             }
         ) {
-            Surface (
+            Surface(
                 shape = MaterialTheme.shapes.large
             ) {
-                Column (
+                Column(
                     modifier = Modifier.padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column (
+                    Column(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        Text("Suppression du message", style = MaterialTheme.typography.headlineSmall)
+                        Text(
+                            "Suppression du message",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
 
                         Text("Êtes-vous sûr de vouloir supprimer ce message ?")
                     }
 
-                    Row (
+                    Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         TextButton(

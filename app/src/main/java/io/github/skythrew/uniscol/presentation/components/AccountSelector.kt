@@ -35,10 +35,10 @@ fun AccountSelector(
     val serviceRepository = ServiceRepository()
 
     var expanded by remember { mutableStateOf(false) }
-    Column (
+    Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button (
+        Button(
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp)),
             colors = ButtonDefaults.filledTonalButtonColors(),
@@ -47,7 +47,7 @@ fun AccountSelector(
             },
             contentPadding = ButtonDefaults.TextButtonWithIconContentPadding
         ) {
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.padding(5.dp)
@@ -58,25 +58,30 @@ fun AccountSelector(
                     modifier = Modifier.size(24.dp)
                 )
                 Text(
-                    selectedAccount.label ?: selectedAccount.username ?: selectedAccount.service.name,
+                    selectedAccount.label ?: selectedAccount.username
+                    ?: selectedAccount.service.name,
                     style = MaterialTheme.typography.labelMedium
                 )
             }
         }
 
-        DropdownMenu (
+        DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
             accounts.forEach { account ->
                 DropdownMenuItem(
                     text = {
-                        Row (
+                        Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             Image(
-                                painter = painterResource(serviceRepository.getIconForService(account.service)),
+                                painter = painterResource(
+                                    serviceRepository.getIconForService(
+                                        account.service
+                                    )
+                                ),
                                 contentDescription = "Icône service",
                                 modifier = Modifier.size(24.dp)
                             )

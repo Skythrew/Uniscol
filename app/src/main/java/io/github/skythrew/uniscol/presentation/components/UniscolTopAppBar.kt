@@ -49,7 +49,7 @@ fun UniscolTopAppBar(
         },
         modifier = modifier.fillMaxWidth(),
         navigationIcon = {
-            when(navigation) {
+            when (navigation) {
                 TopAppBarNavigation.Sidebar -> {
                     IconButton(
                         onClick = {
@@ -59,6 +59,7 @@ fun UniscolTopAppBar(
                         Icon(Icons.Default.Menu, contentDescription = "Menu")
                     }
                 }
+
                 TopAppBarNavigation.Back -> {
                     IconButton(
                         onClick = {

@@ -9,7 +9,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AccountsSettingsViewModel @Inject constructor (private val accountsRepository: AccountRepository): ViewModel() {
+class AccountsSettingsViewModel @Inject constructor(private val accountsRepository: AccountRepository) :
+    ViewModel() {
     val accounts get() = accountsRepository.getAllAccountsStream()
 
     fun deleteAccount(account: Account) {

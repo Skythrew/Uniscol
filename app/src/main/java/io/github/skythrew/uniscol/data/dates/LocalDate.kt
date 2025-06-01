@@ -22,5 +22,8 @@ fun firstWeekInYearStart(year: Int): LocalDate {
     val jan1st = LocalDate(year, 1, 1)
     val previousMonday = jan1st.minus(jan1st.dayOfWeek.ordinal, DateTimeUnit.DAY)
 
-    return if (jan1st.dayOfWeek <= DayOfWeek.THURSDAY) previousMonday else previousMonday.plus(1, DateTimeUnit.WEEK)
+    return if (jan1st.dayOfWeek <= DayOfWeek.THURSDAY) previousMonday else previousMonday.plus(
+        1,
+        DateTimeUnit.WEEK
+    )
 }

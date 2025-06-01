@@ -17,7 +17,7 @@ fun ButtonWithIcon(
     onClick: () -> Unit
 ) {
     Button(onClick = onClick) {
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {

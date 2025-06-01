@@ -42,7 +42,7 @@ fun InterfaceSettingsScreen(navController: NavController, drawerState: DrawerSta
 
     val tabs by appViewModel.tabs.collectAsState(listOf())
 
-    Scaffold (
+    Scaffold(
         topBar = {
             UniscolTopAppBar(
                 title = "Interface",
@@ -52,8 +52,10 @@ fun InterfaceSettingsScreen(navController: NavController, drawerState: DrawerSta
             )
         }
     ) { padding ->
-        Column (
-            modifier = Modifier.padding(padding).padding(8.dp),
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
@@ -61,57 +63,72 @@ fun InterfaceSettingsScreen(navController: NavController, drawerState: DrawerSta
                 style = MaterialTheme.typography.labelLarge
             )
 
-                Box (
-                    modifier = Modifier.border(BorderStroke(1.dp, Color.LightGray), shape = RoundedCornerShape(20.dp))
+            Box(
+                modifier = Modifier.border(
+                    BorderStroke(1.dp, Color.LightGray),
+                    shape = RoundedCornerShape(20.dp)
+                )
+            ) {
+                LazyColumn(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    LazyColumn (
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        itemsIndexed(items = tabs, key = {_, tab -> tab.id}) {index, tab ->
-                            Row (
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.animateItem(
+                    itemsIndexed(items = tabs, key = { _, tab -> tab.id }) { index, tab ->
+                        Row(
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .animateItem(
                                     fadeInSpec = null,
                                     fadeOutSpec = null
-                                ).fillMaxWidth().padding(bottom = if (index < tabs.count() - 1) 8.dp else 0.dp)
+                                )
+                                .fillMaxWidth()
+                                .padding(bottom = if (index < tabs.count() - 1) 8.dp else 0.dp)
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Row (
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    IconButton(onClick = {}) {
-                                        if (tab.icon == null)
-                                            Icon(Icons.Default.Edit, contentDescription = "Edit")
-                                        else
-                                            Icon(imageVector = tab.icon.imageVector(), contentDescription = "")
-                                    }
-
-                                    Text(tab.name, style = MaterialTheme.typography.labelMedium)
+                                IconButton(onClick = {}) {
+                                    if (tab.icon == null)
+                                        Icon(Icons.Default.Edit, contentDescription = "Edit")
+                                    else
+                                        Icon(
+                                            imageVector = tab.icon.imageVector(),
+                                            contentDescription = ""
+                                        )
                                 }
 
-                                Row (
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    IconButton(onClick = {
-                                        appViewModel.makeTabPositionGoUp(index)
-                                    }, enabled = index > 0) {
-                                        Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "")
-                                    }
-                                    IconButton(onClick = {
-                                        appViewModel.makeTabPositionGoDown(index)
-                                    }, enabled = index < tabs.count() - 1) {
-                                        Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "")
-                                    }
-                                }
-
+                                Text(tab.name, style = MaterialTheme.typography.labelMedium)
                             }
 
-                            if (index < tabs.count() - 1)
-                                HorizontalDivider()
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                IconButton(onClick = {
+                                    appViewModel.makeTabPositionGoUp(index)
+                                }, enabled = index > 0) {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowUp,
+                                        contentDescription = ""
+                                    )
+                                }
+                                IconButton(onClick = {
+                                    appViewModel.makeTabPositionGoDown(index)
+                                }, enabled = index < tabs.count() - 1) {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowDown,
+                                        contentDescription = ""
+                                    )
+                                }
+                            }
+
                         }
+
+                        if (index < tabs.count() - 1)
+                            HorizontalDivider()
                     }
                 }
+            }
 
         }
     }

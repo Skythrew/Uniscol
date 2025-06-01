@@ -20,7 +20,7 @@ class MailboxViewModel @Inject constructor(
     mailboxState: MailboxState,
     private val sessionManager: ConversationSessionManager,
     accountsRepository: ConversationAccountRepository
-): ViewModel() {
+) : ViewModel() {
     val accounts = accountsRepository.getAllAccountsStream()
 
     val snackbarHostState = mailboxState.snackbarHostState

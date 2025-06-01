@@ -21,7 +21,10 @@ class ConversationAccountRepository @Inject constructor(
                 var accountClient = authenticationRepository.getAccountClient(account.id)
 
                 if (accountClient == null) {
-                    accountClient = authenticationRepository.setAccount(account.id, EdificeClient(account.instance!!)).first
+                    accountClient = authenticationRepository.setAccount(
+                        account.id,
+                        EdificeClient(account.instance!!)
+                    ).first
                 }
 
                 return EdificeAccount(
@@ -43,6 +46,7 @@ class ConversationAccountRepository @Inject constructor(
                     originalAccount = account
                 )
             }
+
             else -> error("Unsupported service")
         }
     }

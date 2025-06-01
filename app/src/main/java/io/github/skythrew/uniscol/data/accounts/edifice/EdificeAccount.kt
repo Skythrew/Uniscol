@@ -79,7 +79,10 @@ data class EdificeAccount(
     }
 
     override suspend fun toggleUnread(message: Message, unread: Boolean) {
-        client.conversations.setMessagesReadStatus(listOf(message.orig as io.github.skythrew.edificekt.models.conversation.Message), read = !unread)
+        client.conversations.setMessagesReadStatus(
+            listOf(message.orig as io.github.skythrew.edificekt.models.conversation.Message),
+            read = !unread
+        )
     }
 
     override suspend fun getAttachments(message: Message): List<Attachment> {

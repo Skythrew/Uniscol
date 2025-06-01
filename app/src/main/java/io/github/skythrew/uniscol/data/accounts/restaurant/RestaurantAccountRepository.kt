@@ -14,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RestaurantAccountRepository @Inject constructor (
+class RestaurantAccountRepository @Inject constructor(
     private val authenticationRepository: AuthenticationRepository,
     private val accountDao: AccountDao,
     private val restaurantAccountDao: RestaurantAccountDao,
@@ -26,7 +26,10 @@ class RestaurantAccountRepository @Inject constructor (
                 var accountClient = authenticationRepository.getAccountClient(account.account.id)
 
                 if (accountClient == null) {
-                    accountClient = authenticationRepository.setAccount(account.account.id, TurboselfClient()).first
+                    accountClient = authenticationRepository.setAccount(
+                        account.account.id,
+                        TurboselfClient()
+                    ).first
                 }
 
                 TurboselfAccount(
@@ -50,6 +53,7 @@ class RestaurantAccountRepository @Inject constructor (
                     originalAccount = account.account
                 )
             }
+
             else -> error("Unsupported service")
         }
 

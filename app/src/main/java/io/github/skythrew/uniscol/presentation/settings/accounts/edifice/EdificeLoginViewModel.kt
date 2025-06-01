@@ -32,10 +32,10 @@ data class EdificeInstance(
 )
 
 @HiltViewModel
-class EdificeLoginViewModel @Inject constructor (
+class EdificeLoginViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
     private val tabsRepository: TabRepository
-): ViewModel() {
+) : ViewModel() {
     val instances = mapOf(
         "NEO" to EdificeInstance(
             displayName = "NEO",
@@ -232,21 +232,24 @@ class EdificeLoginViewModel @Inject constructor (
 
                 val userinfo = client.userInfo!!
 
-                accountRepository.insertAccount(Account(
-                    service = Services.Edifice,
-                    label = userinfo.firstName + " " + userinfo.lastName,
-                    username = userinfo.username,
-                    password = null,
-                    accessToken = login.accessToken,
-                    accessTokenExpiration = Clock.System.now().toEpochMilliseconds() + login.expiration * 1000,
-                    refreshToken = login.refreshToken,
-                    refreshTokenExpiration = null,
-                    supportCanteen = false,
-                    supportConversation = true,
-                    clientId = selectedInstance.clientId,
-                    clientSecret = selectedInstance.clientSecret,
-                    instance = selectedInstance.url
-                ))
+                accountRepository.insertAccount(
+                    Account(
+                        service = Services.Edifice,
+                        label = userinfo.firstName + " " + userinfo.lastName,
+                        username = userinfo.username,
+                        password = null,
+                        accessToken = login.accessToken,
+                        accessTokenExpiration = Clock.System.now()
+                            .toEpochMilliseconds() + login.expiration * 1000,
+                        refreshToken = login.refreshToken,
+                        refreshTokenExpiration = null,
+                        supportCanteen = false,
+                        supportConversation = true,
+                        clientId = selectedInstance.clientId,
+                        clientSecret = selectedInstance.clientSecret,
+                        instance = selectedInstance.url
+                    )
+                )
 
                 _loginError.value = false
             } catch (e: Exception) {

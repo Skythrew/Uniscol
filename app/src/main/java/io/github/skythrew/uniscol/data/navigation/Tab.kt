@@ -14,18 +14,18 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import io.github.skythrew.uniscol.R
 
-enum class TabIcon (val imageVector: @Composable () -> ImageVector) {
-    HOME({Icons.Outlined.Home}),
-    HOME_SELECTED({Icons.Default.Home}),
+enum class TabIcon(val imageVector: @Composable () -> ImageVector) {
+    HOME({ Icons.Outlined.Home }),
+    HOME_SELECTED({ Icons.Default.Home }),
 
-    SETTINGS({Icons.Outlined.Settings}),
-    SETTINGS_SELECTED({Icons.Default.Settings}),
+    SETTINGS({ Icons.Outlined.Settings }),
+    SETTINGS_SELECTED({ Icons.Default.Settings }),
 
-    RESTAURANT({ImageVector.vectorResource(R.drawable.outline_restaurant_24)}),
-    RESTAURANT_SELECTED({ImageVector.vectorResource(R.drawable.baseline_restaurant_24)}),
+    RESTAURANT({ ImageVector.vectorResource(R.drawable.outline_restaurant_24) }),
+    RESTAURANT_SELECTED({ ImageVector.vectorResource(R.drawable.baseline_restaurant_24) }),
 
-    MAILBOX({Icons.Default.MailOutline}),
-    MAILBOX_SELECTED({Icons.Default.Email})
+    MAILBOX({ Icons.Default.MailOutline }),
+    MAILBOX_SELECTED({ Icons.Default.Email })
 }
 
 @Entity(tableName = "tabs")

@@ -48,9 +48,9 @@ fun TurboselfLoginScreen(navController: NavController, drawerState: DrawerState)
 
     val isLogging by viewModel.isLogging.collectAsState()
 
-    val coroutineScope = rememberCoroutineScope()
+    rememberCoroutineScope()
 
-    Scaffold (
+    Scaffold(
         topBar = {
             UniscolTopAppBar(
                 title = "Connexion à Turboself",
@@ -61,19 +61,26 @@ fun TurboselfLoginScreen(navController: NavController, drawerState: DrawerState)
         }
     ) { padding ->
         Column(
-            modifier = Modifier.padding(padding).fillMaxWidth().fillMaxHeight(),
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxWidth()
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (isLogging)
                 CircularProgressIndicator()
             else
-                Column (
+                Column(
                     verticalArrangement = Arrangement.spacedBy(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Image(painter = painterResource(R.drawable.turboself), contentDescription = "Logo Turboself", modifier = Modifier.size(92.dp))
-                    Column (
+                    Image(
+                        painter = painterResource(R.drawable.turboself),
+                        contentDescription = "Logo Turboself",
+                        modifier = Modifier.size(92.dp)
+                    )
+                    Column(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -82,7 +89,10 @@ fun TurboselfLoginScreen(navController: NavController, drawerState: DrawerState)
                             onValueChange = { username = it },
                             label = { Text("Nom d'utilisateur") },
                             leadingIcon = {
-                                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "Nom d'utilisateur")
+                                Icon(
+                                    imageVector = Icons.Default.AccountCircle,
+                                    contentDescription = "Nom d'utilisateur"
+                                )
                             },
                             isError = loginError,
                             supportingText = {
@@ -97,7 +107,10 @@ fun TurboselfLoginScreen(navController: NavController, drawerState: DrawerState)
                             label = { Text("Mot de passe") },
                             visualTransformation = PasswordVisualTransformation(),
                             leadingIcon = {
-                                Icon(imageVector = Icons.Default.Lock, contentDescription = "Nom d'utilisateur")
+                                Icon(
+                                    imageVector = Icons.Default.Lock,
+                                    contentDescription = "Nom d'utilisateur"
+                                )
                             },
                             isError = loginError,
                             supportingText = {
@@ -107,7 +120,7 @@ fun TurboselfLoginScreen(navController: NavController, drawerState: DrawerState)
                         )
 
                         Button(onClick = {
-                                viewModel.login(username, password)
+                            viewModel.login(username, password)
                         }) {
                             Text("Connexion")
                         }

@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun UniscolTheme(
-    useDarkTheme: Boolean =  isSystemInDarkTheme(),
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
@@ -21,6 +21,7 @@ fun UniscolTheme(
             if (useDarkTheme) dynamicDarkColorScheme(context)
             else dynamicLightColorScheme(context)
         }
+
         useDarkTheme -> darkColorScheme()
         else -> lightColorScheme()
     }

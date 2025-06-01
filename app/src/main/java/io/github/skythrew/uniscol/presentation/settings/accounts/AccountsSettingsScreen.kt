@@ -50,7 +50,7 @@ fun AccountsSettingsScreen(navController: NavController, drawerState: DrawerStat
 
     val serviceRepository = ServiceRepository()
 
-    Scaffold (
+    Scaffold(
         topBar = {
             UniscolTopAppBar(
                 title = "Paramètres des comptes",
@@ -69,21 +69,27 @@ fun AccountsSettingsScreen(navController: NavController, drawerState: DrawerStat
             if (accounts.isEmpty())
 
                 Column(
-                    modifier = Modifier.fillMaxHeight().fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text("Ajoutez un compte pour commencer.")
                 }
             else
-                Column (
+                Column(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     accounts.forEach { account ->
                         SettingsMenuButton(
                             prefix = {
                                 Image(
-                                    painter = painterResource(serviceRepository.getIconForService(account.service)),
+                                    painter = painterResource(
+                                        serviceRepository.getIconForService(
+                                            account.service
+                                        )
+                                    ),
                                     contentDescription = account.service.name,
                                     modifier = Modifier.size(32.dp)
                                 )
@@ -94,7 +100,11 @@ fun AccountsSettingsScreen(navController: NavController, drawerState: DrawerStat
                                         viewModel.deleteAccount(account)
                                     }
                                 ) {
-                                    Icon(Icons.Default.Delete, contentDescription = "Supprimer", tint = MaterialTheme.colorScheme.error)
+                                    Icon(
+                                        Icons.Default.Delete,
+                                        contentDescription = "Supprimer",
+                                        tint = MaterialTheme.colorScheme.error
+                                    )
                                 }
                             },
                             label = account.username ?: account.service.name,

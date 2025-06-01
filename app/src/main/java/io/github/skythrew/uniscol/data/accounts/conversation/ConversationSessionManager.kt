@@ -32,6 +32,7 @@ class ConversationSessionManager @Inject constructor(
     fun updateCurrentMessages() {
         _currentMessages.value = _currentSession.value!!.messages.values.toList()
     }
+
     fun setCurrentAccount(account: ConversationAccountInterface) {
         if (!authenticatedAccounts.containsKey(account.id)) {
             authenticatedAccounts[account.id] = ConversationSession(account)
@@ -46,8 +47,7 @@ class ConversationSessionManager @Inject constructor(
     suspend fun fetchMessages() {
         if (_currentAccount.value == null) {
             return
-        }
-        else {
+        } else {
             if (_currentMessages.value.isEmpty())
                 try {
                     authenticationRepository.login(_currentAccount.value!!)
@@ -71,8 +71,7 @@ class ConversationSessionManager @Inject constructor(
     suspend fun fetchMessage(id: String): Message? {
         if (_currentAccount.value == null) {
             return null
-        }
-        else {
+        } else {
             if (_currentSession.value!!.messages[id]?.fetched == true)
                 return _currentSession.value!!.messages[id]
 

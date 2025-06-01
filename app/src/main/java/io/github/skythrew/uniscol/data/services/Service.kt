@@ -12,7 +12,7 @@ enum class Services {
     Edifice
 }
 
-data class Service (
+data class Service(
     val id: String,
     val name: String,
     val icon: ImageVector?,

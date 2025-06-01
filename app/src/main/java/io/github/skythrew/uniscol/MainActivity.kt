@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -54,7 +53,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val getFileUri = registerForActivityResult(CreateDocument("*")) { uri: Uri? ->
+        registerForActivityResult(CreateDocument("*")) { uri: Uri? ->
             println(uri.toString())
         }
 
@@ -71,8 +70,12 @@ class MainActivity : ComponentActivity() {
 
             val viewModel: UniscolViewModel by viewModels()
 
-            val conversationAccounts: List<ConversationAccountInterface> by viewModel.conversationAccounts.collectAsState(listOf())
-            val restaurantAccounts: List<RestaurantAccountInterface> by viewModel.restaurantAccounts.collectAsState(listOf())
+            val conversationAccounts: List<ConversationAccountInterface> by viewModel.conversationAccounts.collectAsState(
+                listOf()
+            )
+            val restaurantAccounts: List<RestaurantAccountInterface> by viewModel.restaurantAccounts.collectAsState(
+                listOf()
+            )
             val tabs by viewModel.tabs.collectAsState(listOf())
 
             LaunchedEffect(restaurantAccounts.isEmpty()) {
@@ -95,7 +98,7 @@ class MainActivity : ComponentActivity() {
                 ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
-                        ModalDrawerSheet (
+                        ModalDrawerSheet(
                             modifier = Modifier.navigationBarsPadding()
                         ) {
                             DrawerContent(

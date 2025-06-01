@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TurboselfLoginViewModel @Inject constructor (private val restaurantAccountRepository: RestaurantAccountRepository): ViewModel() {
+class TurboselfLoginViewModel @Inject constructor(private val restaurantAccountRepository: RestaurantAccountRepository) :
+    ViewModel() {
     private val client = TurboselfClient()
 
     var _loginError = MutableStateFlow(false)
@@ -32,24 +33,29 @@ class TurboselfLoginViewModel @Inject constructor (private val restaurantAccount
                 val authInfos = client.loginWithCredentials(username, password)
                 val host = client.host()
 
-                restaurantAccountRepository.insertAccount(Account(
-                    service = Services.Turboself,
-                    label = host.firstName + ' ' + host.lastName,
-                    username = authInfos.username,
-                    password = authInfos.password,
-                    accessToken = authInfos.accessToken.value,
-                    accessTokenExpiration = authInfos.accessToken.expirationDate.toEpochMilliseconds(),
-                    refreshToken = authInfos.refreshToken.value,
-                    refreshTokenExpiration = authInfos.refreshToken.expirationDate.toEpochMilliseconds(),
-                    supportCanteen = true,
-                    supportConversation = false,
-                    clientId = null,
-                    clientSecret = null
-                ), infos = RestaurantAccountInfos(
-                    accountId = 0,
-                    cardNumber = host.cardNumber.toString(),
-                    features = listOf(RestaurantAccountFeature.QRCode, RestaurantAccountFeature.Booking)
-                ))
+                restaurantAccountRepository.insertAccount(
+                    Account(
+                        service = Services.Turboself,
+                        label = host.firstName + ' ' + host.lastName,
+                        username = authInfos.username,
+                        password = authInfos.password,
+                        accessToken = authInfos.accessToken.value,
+                        accessTokenExpiration = authInfos.accessToken.expirationDate.toEpochMilliseconds(),
+                        refreshToken = authInfos.refreshToken.value,
+                        refreshTokenExpiration = authInfos.refreshToken.expirationDate.toEpochMilliseconds(),
+                        supportCanteen = true,
+                        supportConversation = false,
+                        clientId = null,
+                        clientSecret = null
+                    ), infos = RestaurantAccountInfos(
+                        accountId = 0,
+                        cardNumber = host.cardNumber.toString(),
+                        features = listOf(
+                            RestaurantAccountFeature.QRCode,
+                            RestaurantAccountFeature.Booking
+                        )
+                    )
+                )
 
                 _loginError.value = false
             } catch (e: Exception) {

@@ -20,20 +20,25 @@ fun SettingsGroup(
     label: String,
     items: @Composable () -> Unit
 ) {
-    Box (
+    Box(
         modifier = Modifier.clip(
             shape = RoundedCornerShape(20.dp)
         )
     ) {
-        Column (
-            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh).padding(16.dp),
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(label, style = MaterialTheme.typography.titleMedium)
 
-            Column (
+            Column(
                 horizontalAlignment = Alignment.Start,
-                modifier = Modifier.fillMaxWidth().clip(shape = RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surfaceContainer)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surfaceContainer)
             ) {
                 items()
             }

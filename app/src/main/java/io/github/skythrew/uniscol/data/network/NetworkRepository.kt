@@ -20,12 +20,13 @@ class NetworkRepository @Inject constructor(
     val online = _online
 
     init {
-        connectivityManager?.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network : Network) {
+        connectivityManager?.registerDefaultNetworkCallback(object :
+            ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
                 _online.value = true
             }
 
-            override fun onLost(network : Network) {
+            override fun onLost(network: Network) {
                 _online.value = false
             }
         })

@@ -11,14 +11,16 @@ enum class RestaurantAccountFeature {
     Booking
 }
 
-@Entity(tableName = "restaurant_account_infos", foreignKeys = [
-    ForeignKey(
-        entity = Account::class,
-        parentColumns = ["id"],
-        childColumns = ["accountId"],
-        onDelete = ForeignKey.CASCADE
-    )
-])
+@Entity(
+    tableName = "restaurant_account_infos", foreignKeys = [
+        ForeignKey(
+            entity = Account::class,
+            parentColumns = ["id"],
+            childColumns = ["accountId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class RestaurantAccountInfos(
     @PrimaryKey
     val accountId: Int,

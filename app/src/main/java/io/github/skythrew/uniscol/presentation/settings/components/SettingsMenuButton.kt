@@ -26,15 +26,19 @@ fun SettingsMenuButton(
     description: String?,
     onClick: () -> Unit
 ) {
-    Row (
-        modifier = Modifier.fillMaxWidth().clickable { onClick() }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
     ) {
-        Row (
-            modifier = Modifier.padding(20.dp).fillMaxWidth(),
+        Row(
+            modifier = Modifier
+                .padding(20.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -65,7 +69,10 @@ fun SettingsMenuGoButton(
     SettingsMenuButton(
         icon,
         {
-            Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "")
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = ""
+            )
         },
         label,
         labelStyle,

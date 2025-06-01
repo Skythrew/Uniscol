@@ -10,7 +10,7 @@ import io.github.skythrew.uniscol.data.navigation.TabIcon
 class Converters {
     @TypeConverter
     fun restaurantFeaturefromString(feature: String): RestaurantAccountFeature {
-        return entries.first {it.name == feature}
+        return entries.first { it.name == feature }
     }
 
     @TypeConverter
@@ -20,7 +20,7 @@ class Converters {
 
     @TypeConverter
     fun restaurantFeaturesfromString(features: String): List<RestaurantAccountFeature> {
-        return features.split(',').map { feature -> entries.first {it.name == feature} }
+        return features.split(',').map { feature -> entries.first { it.name == feature } }
     }
 
     @TypeConverter

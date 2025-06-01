@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class InterfaceSettingsViewModel @Inject constructor(
     private val tabsRepository: TabRepository
-): ViewModel() {
+) : ViewModel() {
     val tabs = tabsRepository.getAllTabsStream()
 
     fun makeTabPositionGoUp(index: Int) {

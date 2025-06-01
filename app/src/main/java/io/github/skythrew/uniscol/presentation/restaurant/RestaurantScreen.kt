@@ -85,7 +85,7 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
     var showModalBottomSheet by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf(false) }
 
-    Scaffold (
+    Scaffold(
         topBar = {
             UniscolTopAppBar(
                 title = "Cantine",
@@ -93,7 +93,7 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                 drawerState = drawerState,
                 navController = navController,
                 actions = {
-                    Row (
+                    Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         if (account?.features?.contains(RestaurantAccountFeature.QRCode) == true)
@@ -102,7 +102,10 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                                     showModalBottomSheet = true
                                 }
                             ) {
-                                Icon(imageVector = ImageVector.vectorResource(R.drawable.baseline_qr_code_24), contentDescription = "QR Code")
+                                Icon(
+                                    imageVector = ImageVector.vectorResource(R.drawable.baseline_qr_code_24),
+                                    contentDescription = "QR Code"
+                                )
                             }
 
                         account?.let {
@@ -118,35 +121,49 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             if (online) {
-                Column (
+                Column(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize().padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
                 ) {
                     if (balance != null)
-                        Box (
-                            modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(MaterialTheme.colorScheme.surfaceContainerLow).width(300.dp)
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                                .width(300.dp)
                         ) {
-                            Column (
-                                modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                            Column(
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .fillMaxWidth(),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Row (
+                                Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                ) { Text("Solde:", style = MaterialTheme.typography.labelLarge)
-                                    Text((balance!!.toDouble() / 100).toString() + "€") }
+                                ) {
+                                    Text("Solde:", style = MaterialTheme.typography.labelLarge)
+                                    Text((balance!!.toDouble() / 100).toString() + "€")
+                                }
                             }
                         }
 
-                    Box (
-                        modifier = Modifier.clip(RoundedCornerShape(20.dp)).background(MaterialTheme.colorScheme.surfaceContainerLow).width(300.dp)
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                            .width(300.dp)
                     ) {
-                        Column (
-                            modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                        Column(
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Row (
+                            Row(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -155,7 +172,10 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                                         viewModel.previousBookingsDate()
                                     }
                                 ) {
-                                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Date précédente")
+                                    Icon(
+                                        Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                                        contentDescription = "Date précédente"
+                                    )
                                 }
 
                                 FilledTonalButton(
@@ -163,7 +183,9 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                                         showDatePicker = true
                                     }
                                 ) {
-                                    Text(LocalDate.parse(bookingsDate).format(UniscolLocalDateFormat))
+                                    Text(
+                                        LocalDate.parse(bookingsDate).format(UniscolLocalDateFormat)
+                                    )
                                 }
                                 FilledTonalIconButton(
                                     onClick = {
@@ -177,27 +199,34 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                                 }
                             }
 
-                            Column (
-                                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 if (bookings.isEmpty())
                                     Text("Aucune réservation disponible")
                                 bookings.forEach { booking ->
-                                    booking.choices.forEachIndexed {index, choice ->
-                                        Row (
+                                    booking.choices.forEachIndexed { index, choice ->
+                                        Row(
                                             horizontalArrangement = Arrangement.SpaceBetween,
                                             verticalAlignment = Alignment.CenterVertically,
                                             modifier = Modifier.fillMaxWidth()
                                         ) {
                                             Text(
-                                                choice.label ?: ("Choix " + (index + 1).toString()), style = MaterialTheme.typography.labelMedium)
+                                                choice.label ?: ("Choix " + (index + 1).toString()),
+                                                style = MaterialTheme.typography.labelMedium
+                                            )
 
                                             Switch(
                                                 enabled = choice.enabled,
                                                 checked = choice.booked,
                                                 onCheckedChange = {
-                                                    viewModel.toggleBookingChoice(choice.id, !choice.booked)
+                                                    viewModel.toggleBookingChoice(
+                                                        choice.id,
+                                                        !choice.booked
+                                                    )
                                                 }
                                             )
                                         }
@@ -207,14 +236,15 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                         }
                     }
                 }
-            }
-            else
-                Column (
+            } else
+                Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize().padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
                 ) {
-                    Column (
+                    Column(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -224,9 +254,11 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                             modifier = Modifier.size(92.dp)
                         )
 
-                        Text("Vous êtes hors-ligne.\nConnectez-vous à Internet pour voir plus d'informations.",
+                        Text(
+                            "Vous êtes hors-ligne.\nConnectez-vous à Internet pour voir plus d'informations.",
                             style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center)
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
         }
@@ -241,7 +273,11 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                         showDatePicker = false
 
                         if (datePickerState.selectedDateMillis != null)
-                            viewModel.updateBookingsDate(Instant.fromEpochMilliseconds(datePickerState.selectedDateMillis!!))
+                            viewModel.updateBookingsDate(
+                                Instant.fromEpochMilliseconds(
+                                    datePickerState.selectedDateMillis!!
+                                )
+                            )
                     }) {
                         Text("OK")
                     }
@@ -258,7 +294,7 @@ fun RestaurantScreen(navController: NavController, drawerState: DrawerState) {
                     showModalBottomSheet = false
                 }
             ) {
-                Column (
+                Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally

@@ -26,7 +26,7 @@ class RestaurantViewModel @Inject constructor(
     val networkRepository: NetworkRepository,
     private val sessionManager: RestaurantSessionManager,
     accountsRepository: RestaurantAccountRepository
-): ViewModel() {
+) : ViewModel() {
     val accounts = accountsRepository.getAllAccountsStream()
 
     val selectedAccount = sessionManager.currentAccount

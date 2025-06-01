@@ -41,7 +41,7 @@ fun EdificeLoginScreen(navController: NavController, drawerState: DrawerState) {
 
     val scrollState = rememberScrollState()
 
-    Scaffold (
+    Scaffold(
         topBar = {
             UniscolTopAppBar(
                 title = "Connexion à " + (selectedInstance?.displayName ?: "NEO/ONE"),
@@ -53,7 +53,9 @@ fun EdificeLoginScreen(navController: NavController, drawerState: DrawerState) {
     ) { padding ->
         if (showWebview && selectedInstance !== null)
             AndroidView(
-                modifier = Modifier.padding(padding).fillMaxSize(),
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
                 factory = { context ->
                     viewModel.webView(context)
                 },
@@ -64,37 +66,45 @@ fun EdificeLoginScreen(navController: NavController, drawerState: DrawerState) {
             )
         else
             Column(
-                modifier = Modifier.padding(padding).fillMaxWidth().fillMaxHeight(),
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                FlowRow (
+                FlowRow(
                     modifier = Modifier.verticalScroll(scrollState),
                     verticalArrangement = Arrangement.spacedBy(32.dp),
                     horizontalArrangement = Arrangement.spacedBy(32.dp)
                 ) {
                     viewModel.instances.forEach { instance ->
-                        ElevatedCard (
+                        ElevatedCard(
                             onClick = {
                                 viewModel.selectInstance(instance.key)
                             },
                             modifier = Modifier.size(150.dp)
                         ) {
-                                Column (
-                                    modifier = Modifier.fillMaxSize().padding(8.dp),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Image(painterResource(instance.value.logo), contentDescription = instance.key)
-                                }
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(8.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    painterResource(instance.value.logo),
+                                    contentDescription = instance.key
+                                )
+                            }
 
-                                Column (
-                                    modifier = Modifier.fillMaxSize(),
-                                    verticalArrangement = Arrangement.Bottom,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(instance.key, modifier = Modifier.padding(top = 8.dp))
-                                }
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.Bottom,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(instance.key, modifier = Modifier.padding(top = 8.dp))
+                            }
                         }
                     }
                 }

@@ -25,7 +25,7 @@ fun DrawerItem(
     NavigationDrawerItem(
         label = { Text(label) },
         icon = {
-            when(selected) {
+            when (selected) {
                 true -> iconSelected?.let { Icon(iconSelected, contentDescription = label) }
                 false -> icon?.let { Icon(icon, contentDescription = label) }
             }
@@ -42,7 +42,7 @@ fun DrawerContent(
     tabs: List<Tab>,
     navigateToTab: (destination: Any) -> Unit
 ) {
-    Column (
+    Column(
         modifier = Modifier.padding(vertical = 5.dp),
     ) {
         tabs.forEachIndexed { index, tab ->

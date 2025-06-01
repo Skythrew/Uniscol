@@ -53,7 +53,7 @@ fun MailboxScreen(navController: NavController, drawerState: DrawerState) {
 
     val messages by viewModel.messages.collectAsState()
 
-    Scaffold (
+    Scaffold(
         snackbarHost = {
             SnackbarHost(viewModel.snackbarHostState)
         },
@@ -64,7 +64,7 @@ fun MailboxScreen(navController: NavController, drawerState: DrawerState) {
                 drawerState = drawerState,
                 navController = navController,
                 actions = {
-                    Row (
+                    Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         account?.let {
@@ -80,47 +80,63 @@ fun MailboxScreen(navController: NavController, drawerState: DrawerState) {
     ) { padding ->
         Box(modifier = Modifier.padding(padding)) {
             if (online) {
-                LazyColumn (
+                LazyColumn(
                     state = viewModel.lazyListState,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    items(messages, key = {message: Message -> message.id}) { message ->
-                        Box (
+                    items(messages, key = { message: Message -> message.id }) { message ->
+                        Box(
                             modifier = Modifier.clickable {
-                                navController.navigate(Routes.Message(id = message.id, title = message.subject)) {
+                                navController.navigate(
+                                    Routes.Message(
+                                        id = message.id,
+                                        title = message.subject
+                                    )
+                                ) {
                                     launchSingleTop = true
                                 }
                             }
                         ) {
-                            Row (
-                                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                            Row(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(16.dp)
                             ) {
                                 AsyncImage(
-                                    modifier = Modifier.clip(CircleShape).size(32.dp),
+                                    modifier = Modifier
+                                        .clip(CircleShape)
+                                        .size(32.dp),
                                     model = message.authorPictureUrl,
                                     contentDescription = ""
                                 )
-                                Column (
+                                Column(
                                     verticalArrangement = Arrangement.spacedBy(8.dp)
                                 ) {
-                                    Text(message.author, fontWeight = if (message.unread) FontWeight.Bold else FontWeight.Normal)
-                                    Text(message.subject, fontWeight = if (message.unread) FontWeight.Bold else FontWeight.Normal)
+                                    Text(
+                                        message.author,
+                                        fontWeight = if (message.unread) FontWeight.Bold else FontWeight.Normal
+                                    )
+                                    Text(
+                                        message.subject,
+                                        fontWeight = if (message.unread) FontWeight.Bold else FontWeight.Normal
+                                    )
                                 }
                             }
                         }
 
                     }
                 }
-            }
-            else
-                Column (
+            } else
+                Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize().padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp)
                 ) {
-                    Column (
+                    Column(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -130,9 +146,11 @@ fun MailboxScreen(navController: NavController, drawerState: DrawerState) {
                             modifier = Modifier.size(92.dp)
                         )
 
-                        Text("Vous êtes hors-ligne.\nConnectez-vous à Internet pour voir plus d'informations.",
+                        Text(
+                            "Vous êtes hors-ligne.\nConnectez-vous à Internet pour voir plus d'informations.",
                             style = MaterialTheme.typography.bodyLarge,
-                            textAlign = TextAlign.Center)
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
         }

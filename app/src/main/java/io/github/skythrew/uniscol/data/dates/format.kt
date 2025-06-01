@@ -17,7 +17,7 @@ val UniscolRawDateFormat = DateTimeComponents.Format {
 val UniscolLocalDateFormat = LocalDate.Format {
     dayOfWeek(
         DayOfWeekNames(
-            listOf("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche",)
+            listOf("Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche")
         )
     )
     char(' ')
@@ -25,7 +25,20 @@ val UniscolLocalDateFormat = LocalDate.Format {
     char(' ')
     monthName(
         MonthNames(
-            listOf("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre")
+            listOf(
+                "Janvier",
+                "Février",
+                "Mars",
+                "Avril",
+                "Mai",
+                "Juin",
+                "Juillet",
+                "Août",
+                "Septembre",
+                "Octobre",
+                "Novembre",
+                "Décembre"
+            )
         )
     )
 }

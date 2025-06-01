@@ -25,18 +25,33 @@ import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, drawerState: DrawerState, navigateToSettings: () -> Unit) {
-    Scaffold (
-        topBar = { UniscolTopAppBar("Accueil", TopAppBarNavigation.Sidebar, drawerState, navController) }
+fun HomeScreen(
+    navController: NavController,
+    drawerState: DrawerState,
+    navigateToSettings: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+            UniscolTopAppBar(
+                "Accueil",
+                TopAppBarNavigation.Sidebar,
+                drawerState,
+                navController
+            )
+        }
     )
 
     { padding ->
-        Column (
-            modifier = Modifier.padding(padding).fillMaxWidth().fillMaxHeight().background(MaterialTheme.colorScheme.surface),
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.surface),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column (
+            Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -49,7 +64,7 @@ fun HomeScreen(navController: NavController, drawerState: DrawerState, navigateT
                     textAlign = TextAlign.Center
                 )
 
-                ButtonWithIcon (
+                ButtonWithIcon(
                     label = "Paramètres",
                     icon = Icons.Default.Settings
                 ) {

@@ -72,7 +72,11 @@ data class TurboselfAccount(
     }
 
     override suspend fun toggleBookChoice(date: LocalDate, id: String, book: Boolean): Boolean {
-        return this.client.bookMeal(id, date.dayOfWeek.value.toShort(), reservations = if (book) 1 else 0).booked
+        return this.client.bookMeal(
+            id,
+            date.dayOfWeek.value.toShort(),
+            reservations = if (book) 1 else 0
+        ).booked
     }
 
     override fun tokens(): Tokens? {
