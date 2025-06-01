@@ -1,7 +1,9 @@
 package io.github.skythrew.uniscol.data.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
@@ -20,7 +22,10 @@ enum class TabIcon (val imageVector: @Composable () -> ImageVector) {
     SETTINGS_SELECTED({Icons.Default.Settings}),
 
     RESTAURANT({ImageVector.vectorResource(R.drawable.outline_restaurant_24)}),
-    RESTAURANT_SELECTED({ImageVector.vectorResource(R.drawable.baseline_restaurant_24)})
+    RESTAURANT_SELECTED({ImageVector.vectorResource(R.drawable.baseline_restaurant_24)}),
+
+    MAILBOX({Icons.Default.MailOutline}),
+    MAILBOX_SELECTED({Icons.Default.Email})
 }
 
 @Entity(tableName = "tabs")
@@ -31,6 +36,6 @@ data class Tab(
     val icon: TabIcon?,
     val iconSelected: TabIcon?,
     val enabled: Boolean,
-    val destination: String,
+    val destination: Route,
     val position: Int
 )

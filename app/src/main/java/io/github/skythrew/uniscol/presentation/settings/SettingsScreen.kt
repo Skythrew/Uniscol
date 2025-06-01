@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -23,6 +24,7 @@ import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
 import io.github.skythrew.uniscol.presentation.settings.components.SettingsMenuGoButton
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(navController: NavController, drawerState: DrawerState) {
     Scaffold(

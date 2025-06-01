@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -35,6 +36,7 @@ import io.github.skythrew.uniscol.R
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurboselfLoginScreen(navController: NavController, drawerState: DrawerState) {
     val viewModel: TurboselfLoginViewModel = hiltViewModel()

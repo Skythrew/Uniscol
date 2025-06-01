@@ -10,7 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
 import io.github.skythrew.uniscol.data.navigation.Tab
 
 @Composable
@@ -18,11 +19,9 @@ fun DrawerItem(
     label: String,
     icon: ImageVector? = null,
     iconSelected: ImageVector? = null,
-    destination: String,
-    currentDestination: NavDestination?,
-    navigate: (destination: String) -> Unit
+    selected: Boolean,
+    navigate: () -> Unit
 ) {
-    val selected = currentDestination?.route == destination
     NavigationDrawerItem(
         label = { Text(label) },
         icon = {
@@ -32,28 +31,29 @@ fun DrawerItem(
             }
         },
         selected = selected,
-        onClick = { navigate(destination) },
+        onClick = navigate,
         modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
     )
 }
 
 @Composable
 fun DrawerContent(
+    navController: NavController,
     tabs: List<Tab>,
-    navigateToTab: (destination: String) -> Unit,
-    currentDestination: NavDestination?
+    navigateToTab: (destination: Any) -> Unit
 ) {
     Column (
         modifier = Modifier.padding(vertical = 5.dp),
     ) {
-        tabs.forEach { tab ->
+        tabs.forEachIndexed { index, tab ->
             DrawerItem(
                 label = tab.name,
                 icon = tab.icon?.imageVector?.let { it() },
                 iconSelected = tab.iconSelected?.imageVector?.let { it() },
-                destination = tab.destination,
-                currentDestination = currentDestination,
-                navigate = navigateToTab
+                selected = navController.currentDestination?.hasRoute(tab.destination.route::class) == true,
+                navigate = {
+                    navigateToTab(tab.destination.route)
+                }
             )
         }
     }

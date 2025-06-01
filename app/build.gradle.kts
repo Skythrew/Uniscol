@@ -66,12 +66,18 @@ dependencies {
 
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.compose.webview)
     ksp(libs.hilt.compiler)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.ktor3)
+
 
     implementation(libs.kotlinx.datetime)
 
     // Services
     implementation(libs.turboselfkt.android)
+    implementation(libs.edificekt)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,6 +1,8 @@
 [versions]
 agp = "8.10.0"
+coilCompose = "3.2.0"
 composeQrCode = "1.0.1"
+composeWebview = "1.9.40"
 datastorePreferences = "1.1.6"
 hiltAndroid = "2.56.2"
 hiltNavigationCompose = "1.2.0"
@@ -16,6 +18,7 @@ composeBom = "2024.09.00"
 navigationCompose = "2.9.0"
 roomRuntime = "2.7.1"
 turboselfktAndroid = "1.0.1"
+edificekt = "1.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -26,7 +29,10 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coilCompose" }
 compose-qr-code = { module = "com.lightspark:compose-qr-code", version.ref = "composeQrCode" }
+compose-webview = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "composeWebview" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -44,6 +50,8 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 turboselfkt-android = { module = "io.github.skythrew:turboselfkt", version.ref = "turboselfktAndroid" }
+edificekt = { module = "io.github.skythrew:edificekt", version.ref = "edificekt" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

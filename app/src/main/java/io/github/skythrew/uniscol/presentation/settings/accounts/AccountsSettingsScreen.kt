@@ -123,6 +123,17 @@ fun AccountsSettingsScreen(navController: NavController, drawerState: DrawerStat
                         showServicesModalBottomSheet = false
                         navController.navigate(Routes.TurboselfLogin) { launchSingleTop = true }
                     }
+
+                    SettingsMenuButton(prefix = {
+                        Image(
+                            painter = painterResource(R.drawable.edifice),
+                            contentDescription = "Edifice",
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }, label = "NEO/ONE", description = null) {
+                        showServicesModalBottomSheet = false
+                        navController.navigate(Routes.EdificeLogin) { launchSingleTop = true }
+                    }
                 }
             }
     }

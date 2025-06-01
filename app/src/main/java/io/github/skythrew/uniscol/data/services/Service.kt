@@ -8,7 +8,8 @@ enum class ServiceType {
 }
 
 enum class Services {
-    Turboself
+    Turboself,
+    Edifice
 }
 
 data class Service (

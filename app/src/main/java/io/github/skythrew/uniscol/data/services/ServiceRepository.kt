@@ -6,6 +6,7 @@ class ServiceRepository {
     fun getIconForService(service: Services): Int {
         return when (service) {
             Services.Turboself -> R.drawable.turboself
+            Services.Edifice -> R.drawable.logo_neo
         }
     }
 }

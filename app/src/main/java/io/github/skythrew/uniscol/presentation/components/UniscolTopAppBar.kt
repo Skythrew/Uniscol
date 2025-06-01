@@ -11,6 +11,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,16 +35,19 @@ fun UniscolTopAppBar(
     navigation: TopAppBarNavigation,
     drawerState: DrawerState,
     navController: NavController,
+    modifier: Modifier = Modifier,
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     var backButtonEnabled by remember { mutableStateOf(true) }
     val coroutineScope = rememberCoroutineScope()
 
     TopAppBar(
+        colors = colors,
         title = {
             Text(title)
         },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         navigationIcon = {
             when(navigation) {
                 TopAppBarNavigation.Sidebar -> {

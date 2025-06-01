@@ -8,9 +8,13 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.data.accounts.AccountDao
+import io.github.skythrew.uniscol.data.accounts.conversation.ConversationAccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInfos
-import io.github.skythrew.uniscol.data.navigation.Routes
+import io.github.skythrew.uniscol.data.navigation.HomeRoute
+import io.github.skythrew.uniscol.data.navigation.MailboxRoute
+import io.github.skythrew.uniscol.data.navigation.RestaurantRoute
+import io.github.skythrew.uniscol.data.navigation.SettingsRoute
 import io.github.skythrew.uniscol.data.navigation.Tab
 import io.github.skythrew.uniscol.data.navigation.TabDao
 import io.github.skythrew.uniscol.data.navigation.TabIcon
@@ -33,7 +37,7 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
                     icon = TabIcon.HOME,
                     iconSelected = TabIcon.HOME_SELECTED,
                     enabled = true,
-                    destination = Routes.Home,
+                    destination = HomeRoute(),
                     position = 0
                 ),
                 Tab(
@@ -42,7 +46,7 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
                     icon = TabIcon.SETTINGS,
                     iconSelected = TabIcon.SETTINGS_SELECTED,
                     enabled = true,
-                    destination = Routes.Settings,
+                    destination = SettingsRoute(),
                     position = 9999
                 ),
                 Tab(
@@ -51,8 +55,17 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
                     icon = TabIcon.RESTAURANT,
                     iconSelected = TabIcon.RESTAURANT_SELECTED,
                     enabled = false,
-                    destination = Routes.Restaurant,
+                    destination = RestaurantRoute(),
                     position = 1
+                ),
+                Tab(
+                    id = 3,
+                    name = "Messagerie",
+                    icon = TabIcon.MAILBOX,
+                    iconSelected = TabIcon.MAILBOX_SELECTED,
+                    enabled = false,
+                    destination = MailboxRoute(),
+                    position = 2
                 )
             )
 
@@ -66,11 +79,12 @@ class DatabaseInitCallback(private val context: Context) : RoomDatabase.Callback
     }
 }
 
-@Database(entities = [Account::class, RestaurantAccountInfos::class, Tab::class], version = 7, exportSchema = false)
+@Database(entities = [Account::class, RestaurantAccountInfos::class, Tab::class], version = 8, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class UniscolDatabase: RoomDatabase() {
     abstract fun accountDao(): AccountDao
     abstract fun restaurantAccountDao(): RestaurantAccountDao
+    abstract fun conversationAccountDao(): ConversationAccountDao
     abstract fun tabDao(): TabDao
 
     companion object {

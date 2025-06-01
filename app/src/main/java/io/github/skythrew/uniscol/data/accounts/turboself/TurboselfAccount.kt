@@ -1,12 +1,13 @@
 package io.github.skythrew.uniscol.data.accounts.turboself
 
 import io.github.skythrew.turboselfkt.core.TurboselfClient
+import io.github.skythrew.uniscol.data.accounts.Account
+import io.github.skythrew.uniscol.data.accounts.Tokens
 import io.github.skythrew.uniscol.data.accounts.restaurant.Booking
 import io.github.skythrew.uniscol.data.accounts.restaurant.BookingChoice
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountFeature
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInterface
 import io.github.skythrew.uniscol.data.dates.UniscolRawDateFormat
-import io.github.skythrew.uniscol.data.services.ServiceType
 import io.github.skythrew.uniscol.data.services.Services
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
@@ -25,7 +26,11 @@ data class TurboselfAccount(
     override val refreshTokenExpiration: Long?,
     override val features: Set<RestaurantAccountFeature>,
     override val supportCanteen: Boolean,
-    override val supportConversation: Boolean
+    override val supportConversation: Boolean,
+    override val clientId: String?,
+    override val clientSecret: String?,
+    override val originalAccount: Account,
+    override val instance: String? = null
 ) : RestaurantAccountInterface {
     override suspend fun login() {
         this.client.loginWithCredentials(this.username, this.password)
@@ -68,5 +73,9 @@ data class TurboselfAccount(
 
     override suspend fun toggleBookChoice(date: LocalDate, id: String, book: Boolean): Boolean {
         return this.client.bookMeal(id, date.dayOfWeek.value.toShort(), reservations = if (book) 1 else 0).booked
+    }
+
+    override fun tokens(): Tokens? {
+        return null
     }
 }

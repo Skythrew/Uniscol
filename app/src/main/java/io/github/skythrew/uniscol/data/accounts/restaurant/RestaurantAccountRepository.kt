@@ -4,7 +4,7 @@ import io.github.skythrew.turboselfkt.core.TurboselfClient
 import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.data.accounts.AccountDao
 import io.github.skythrew.uniscol.data.accounts.turboself.TurboselfAccount
-import io.github.skythrew.uniscol.data.navigation.Routes
+import io.github.skythrew.uniscol.data.navigation.RestaurantRoute
 import io.github.skythrew.uniscol.data.navigation.TabDao
 import io.github.skythrew.uniscol.data.network.AuthenticationRepository
 import io.github.skythrew.uniscol.data.services.Services
@@ -43,9 +43,14 @@ class RestaurantAccountRepository @Inject constructor (
                     cardNumber = account.infos.cardNumber,
                     features = account.infos.features.toSet(),
                     supportCanteen = account.account.supportCanteen,
-                    supportConversation = account.account.supportConversation
+                    supportConversation = account.account.supportConversation,
+                    instance = account.account.instance,
+                    clientId = account.account.clientId,
+                    clientSecret = account.account.clientSecret,
+                    originalAccount = account.account
                 )
             }
+            else -> error("Unsupported service")
         }
 
     fun getAllAccountsStream(): Flow<List<RestaurantAccountInterface>> {
@@ -56,6 +61,6 @@ class RestaurantAccountRepository @Inject constructor (
 
     suspend fun insertAccount(account: Account, infos: RestaurantAccountInfos) {
         restaurantAccountDao.insertAccountWithInfos(account, infos)
-        tabsDao.enableByDestination(Routes.Restaurant)
+        tabsDao.enableByDestination(RestaurantRoute().name)
     }
 }

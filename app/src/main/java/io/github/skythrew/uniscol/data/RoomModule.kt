@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.skythrew.uniscol.data.accounts.AccountDao
+import io.github.skythrew.uniscol.data.accounts.conversation.ConversationAccountDao
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountDao
 import io.github.skythrew.uniscol.data.navigation.TabDao
 
@@ -31,5 +32,10 @@ object AccountModule {
     @Provides
     fun provideRestaurantAccountDao(uniscolDatabase: UniscolDatabase): RestaurantAccountDao {
         return uniscolDatabase.restaurantAccountDao()
+    }
+
+    @Provides
+    fun provideConversationAccountDao(uniscolDatabase: UniscolDatabase): ConversationAccountDao {
+        return uniscolDatabase.conversationAccountDao()
     }
 }

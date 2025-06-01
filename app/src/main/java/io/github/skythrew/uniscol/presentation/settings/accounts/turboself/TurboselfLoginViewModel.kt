@@ -9,7 +9,6 @@ import io.github.skythrew.uniscol.data.accounts.Account
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountFeature
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInfos
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountRepository
-import io.github.skythrew.uniscol.data.services.ServiceType
 import io.github.skythrew.uniscol.data.services.Services
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +42,9 @@ class TurboselfLoginViewModel @Inject constructor (private val restaurantAccount
                     refreshToken = authInfos.refreshToken.value,
                     refreshTokenExpiration = authInfos.refreshToken.expirationDate.toEpochMilliseconds(),
                     supportCanteen = true,
-                    supportConversation = false
+                    supportConversation = false,
+                    clientId = null,
+                    clientSecret = null
                 ), infos = RestaurantAccountInfos(
                     accountId = 0,
                     cardNumber = host.cardNumber.toString(),

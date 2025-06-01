@@ -1,9 +1,12 @@
 package io.github.skythrew.uniscol
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.EaseIn
@@ -20,21 +23,28 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.skythrew.uniscol.data.accounts.Account
+import io.github.skythrew.uniscol.data.accounts.conversation.ConversationAccountInterface
 import io.github.skythrew.uniscol.data.accounts.restaurant.RestaurantAccountInterface
+import io.github.skythrew.uniscol.data.navigation.MailboxRoute
+import io.github.skythrew.uniscol.data.navigation.RestaurantRoute
 import io.github.skythrew.uniscol.data.navigation.Routes
 import io.github.skythrew.uniscol.presentation.UniscolTheme
 import io.github.skythrew.uniscol.presentation.UniscolViewModel
 import io.github.skythrew.uniscol.presentation.home.HomeScreen
+import io.github.skythrew.uniscol.presentation.mailbox.MailboxScreen
+import io.github.skythrew.uniscol.presentation.mailbox.MessageScreen
 import io.github.skythrew.uniscol.presentation.navigation.DrawerContent
 import io.github.skythrew.uniscol.presentation.restaurant.RestaurantScreen
 import io.github.skythrew.uniscol.presentation.settings.SettingsScreen
 import io.github.skythrew.uniscol.presentation.settings.accounts.AccountsSettingsScreen
+import io.github.skythrew.uniscol.presentation.settings.accounts.edifice.EdificeLoginScreen
 import io.github.skythrew.uniscol.presentation.settings.accounts.turboself.TurboselfLoginScreen
 import io.github.skythrew.uniscol.presentation.settings.ui.InterfaceSettingsScreen
 import kotlinx.coroutines.launch
@@ -44,6 +54,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val getFileUri = registerForActivityResult(CreateDocument("*")) { uri: Uri? ->
+            println(uri.toString())
+        }
 
         enableEdgeToEdge()
         setContent {
@@ -58,13 +71,23 @@ class MainActivity : ComponentActivity() {
 
             val viewModel: UniscolViewModel by viewModels()
 
-            val accounts: List<Account> by viewModel.accounts.collectAsState(listOf())
+            val conversationAccounts: List<ConversationAccountInterface> by viewModel.conversationAccounts.collectAsState(listOf())
             val restaurantAccounts: List<RestaurantAccountInterface> by viewModel.restaurantAccounts.collectAsState(listOf())
             val tabs by viewModel.tabs.collectAsState(listOf())
 
             LaunchedEffect(restaurantAccounts.isEmpty()) {
                 if (restaurantAccounts.isEmpty()) {
-                    viewModel.disableTab(Routes.Restaurant)
+                    viewModel.disableTab(RestaurantRoute().name)
+                } else {
+                    viewModel.enableTab(RestaurantRoute().name)
+                }
+            }
+
+            LaunchedEffect(conversationAccounts.isEmpty()) {
+                if (conversationAccounts.isEmpty()) {
+                    viewModel.disableTab(MailboxRoute().name)
+                } else {
+                    viewModel.enableTab(MailboxRoute().name)
                 }
             }
 
@@ -76,39 +99,37 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.navigationBarsPadding()
                         ) {
                             DrawerContent(
-                                tabs,
-                                {destination: String ->
-                                    if (currentDestination?.route != destination) {
-                                        navController.navigate(destination) {
-                                            popUpTo(navController.graph.id) {
-                                                inclusive = true
-                                            }
+                                navController,
+                                tabs
+                            ) { destination: Any ->
+                                if (currentDestination?.hasRoute(destination::class) == false) {
+                                    navController.navigate(destination) {
+                                        popUpTo(navController.graph.id) {
+                                            inclusive = true
                                         }
                                     }
+                                }
 
-                                    coroutineScope.launch {
-                                        drawerState.close()
-                                    }
-                                },
-                                currentDestination
-                            )
+                                coroutineScope.launch {
+                                    drawerState.close()
+                                }
+                            }
                         }
 
                     }
                 ) {
                     NavHost(navController = navController, startDestination = Routes.Home) {
-
-                        composable(Routes.Home){
+                        composable<Routes.Home> {
                             HomeScreen(navController, drawerState) {
-                                navController.navigate("settings")
+                                navController.navigate(Routes.Settings)
                             }
                         }
 
-                        composable(Routes.Settings) {
+                        composable<Routes.Settings> {
                             SettingsScreen(navController, drawerState)
                         }
 
-                        composable(Routes.AccountSettings, enterTransition = {
+                        composable<Routes.AccountSettings>(enterTransition = {
                             fadeIn(
                                 animationSpec = tween(
                                     200, easing = LinearEasing
@@ -121,16 +142,29 @@ class MainActivity : ComponentActivity() {
                             AccountsSettingsScreen(navController, drawerState)
                         }
 
-                        composable(Routes.TurboselfLogin) {
+                        composable<Routes.TurboselfLogin> {
                             TurboselfLoginScreen(navController, drawerState)
                         }
 
-                        composable(Routes.Restaurant) {
+                        composable<Routes.EdificeLogin> {
+                            EdificeLoginScreen(navController, drawerState)
+                        }
+
+                        composable<Routes.Restaurant> {
                             RestaurantScreen(navController, drawerState)
                         }
 
-                        composable(Routes.InterfaceSettings) {
+                        composable<Routes.Mailbox> {
+                            MailboxScreen(navController, drawerState)
+                        }
+
+                        composable<Routes.InterfaceSettings> {
                             InterfaceSettingsScreen(navController, drawerState)
+                        }
+
+                        composable<Routes.Message> {
+                            val message: Routes.Message = it.toRoute()
+                            MessageScreen(navController, drawerState, message.id)
                         }
                     }
                 }

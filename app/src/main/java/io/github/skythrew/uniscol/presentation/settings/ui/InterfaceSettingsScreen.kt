@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DrawerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,6 +35,7 @@ import androidx.navigation.NavController
 import io.github.skythrew.uniscol.presentation.components.TopAppBarNavigation
 import io.github.skythrew.uniscol.presentation.components.UniscolTopAppBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InterfaceSettingsScreen(navController: NavController, drawerState: DrawerState) {
     val appViewModel: InterfaceSettingsViewModel = hiltViewModel()
