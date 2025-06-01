@@ -6,3 +6,4 @@
 
 - 👨 Multi-comptes
 - 🍽️ Service de cantine **Turboself®**
+- 🗨️ Messagerie ENT (OpenENT-NG/Edifice)
